@@ -8,22 +8,9 @@ Proyek ini adalah aplikasi web yang menggunakan Node.js dengan struktur Model-Vi
 
 <details>
   <summary>Struktur Direktori</summary>
-ansor_web/
-├── app/
-│ └── ...
-├── node_modules/
-├── public/
-│ └── css/
-│ └── input.css
-│ └── output.css
-├── .gitignore
-├── .htaccess
-├── package-lock.json
-├── package.json
-├── postcss.config.js
-├── README.md
-├── tailwind.config.js
+
 </details>
+
 ## Prasyarat
 
 - Node.js dan npm (Node Package Manager) harus sudah terinstal di sistem Anda.
@@ -53,7 +40,7 @@ ansor_web/
 
 <details>
 <summary>konfigurasi file tailwind.config.js</summary>
-```bash
+```javascript
 module.exports = {
    mode: 'jit',
    darkMode:'class',
