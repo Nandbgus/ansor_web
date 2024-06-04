@@ -9,7 +9,7 @@ Proyek ini adalah aplikasi web yang menggunakan Node.js dengan struktur Model-Vi
 <details>
   <summary>Struktur Direktori</summary>
 
-![Preview](https://i.ibb.co.com/RThNsyn/image.png)
+![Preview](https://i.ibb.co.com/m5v028s/image.png)
 
 </details>
 
