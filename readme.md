@@ -71,4 +71,4 @@ module.exports = {
 
 ## Menjalankan Project
 
-1.
+1. **Jalankan Di Localhost**

@@ -23,14 +23,13 @@ class Auth extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Ambil data dari form login
-            $email = $_POST['email'];
+            $id = $_POST['id'];
             $password = $_POST['password'];
 
             // Panggil model User_model
             $user = $this->model('User_model');
-            $user->email = $email;
+            $user->id = $id;
             $user->password = $password;
-
             try {
                 if ($user->login()) {
                     // Mulai session
@@ -41,9 +40,9 @@ class Auth extends Controller
                     $_SESSION['is_admin'] = $user->is_admin;
 
                     // Simpan informasi pengguna tambahan seperti nama dan foto profil ke dalam session
-                    $_SESSION['user_name'] = $user->name;
+                    $_SESSION['user_name'] = $user->nama_a;
                     $_SESSION['is_admin'] = $user->is_admin;
-                    $_SESSION['user_profile_picture'] = $user->profile_picture;
+                    $_SESSION['email'] = $user->email;
 
                     // Redirect ke halaman yang sesuai
                     if ($user->is_admin) {

@@ -150,7 +150,8 @@
                                 <div class="profile flex justify-center align-middle">
                                     <div class="flex items-center space-x-4 pl-2">
                                         <div class="text-sm font-normal text-gray-700">
-                                            <?= $_SESSION['user_name'] ?>
+                                            <?= $_SESSION['user_name'];
+                                            ?>
                                             <div class="text-sm text-right text-gray-500 font-light">
                                                 <?= $_SESSION['is_admin'] === 1 ? 'Admin' : 'User' ?>
                                             </div>
