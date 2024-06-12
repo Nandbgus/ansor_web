@@ -13,4 +13,4 @@
     <script src="/ansor/public/js/datatables.min.js"></script>
 </head>
 
-<body class="text-gray-800">
+<body class="text-gray-800 p-4">

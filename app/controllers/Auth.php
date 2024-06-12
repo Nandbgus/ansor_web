@@ -11,13 +11,7 @@ class Auth extends Controller
         $this->view('templates/footer');
     }
 
-    public function profile()
-    {
-        $data['head'] = "Profile";
-        $this->view('templates/header', $data);
-        $this->view('auth/profile');
-        $this->view('templates/footer');
-    }
+
 
     public function login()
     {
@@ -37,12 +31,19 @@ class Auth extends Controller
 
                     // Set session user_id dan is_admin
                     $_SESSION['user_id'] = $user->id;
+                    $_SESSION['email'] = $user->email;
                     $_SESSION['is_admin'] = $user->is_admin;
 
                     // Simpan informasi pengguna tambahan seperti nama dan foto profil ke dalam session
                     $_SESSION['user_name'] = $user->nama_a;
+                    $_SESSION['no_hp'] = $user->no_hp;
+                    $_SESSION['status'] = $user->nama_status;
+                    $_SESSION['desa'] = $user->nama_desa;
+                    $_SESSION['dusun'] = $user->nama_dusun;
+                    $_SESSION['rt'] = $user->rt;
+                    $_SESSION['nama_kegiatan'] = $user->nama_kegiatan;
+                    $_SESSION['user_profile_picture'] = $user->foto;
                     $_SESSION['is_admin'] = $user->is_admin;
-                    $_SESSION['email'] = $user->email;
 
                     // Redirect ke halaman yang sesuai
                     if ($user->is_admin) {
@@ -91,6 +92,40 @@ class Auth extends Controller
             }
         } else {
             $this->index();
+        }
+    }
+
+    public function profile()
+    {
+
+        if (!isset($_SESSION['user_id'])) {
+            // Jika pengguna belum login, arahkan ke halaman login
+            header("Location: " . BASEURL . "/auth/login");
+            exit();
+        }
+
+        // Assuming User_model is already loaded
+        $userModel = $this->model('User_model');
+        $userModel->id = $_SESSION['user_id'];
+
+        if ($_SESSION['is_admin']) {
+            // Jika pengguna adalah admin, arahkan ke tampilan admin
+            $data['head'] = "Admin Profile";
+            $data['kegiatan'] = $userModel->semua_kegiatan();
+            $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
+            $data['current_page'] = 'profile_admin';
+            $this->view('templates/admin/admin_sidebar', $data);
+            $this->view('auth/profile', $data);
+            $this->view('templates/admin/footer_nav');
+
+            // Debugging: var_dump data kegiatan dan data pengguna
+        } else {
+            // Jika pengguna bukan admin, arahkan ke tampilan pengguna biasa
+            $data['head'] = "User Profile";
+            $data['kegiatan'] = $userModel->semua_kegiatan();
+            $this->view('templates/anggota/anggota_header', $data);
+            $this->view('auth/profile', $data);
+            $this->view('templates/anggota/footer_nav');
         }
     }
 

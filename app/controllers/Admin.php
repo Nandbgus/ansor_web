@@ -4,6 +4,7 @@ class Admin extends Controller
 {
     public function __construct()
     {
+
         // Panggil fungsi parent __construct untuk melakukan inisialisasi
         parent::__construct();
 
@@ -21,6 +22,7 @@ class Admin extends Controller
         // Tampilkan halaman 
         $data['head'] = 'Dashboard';
         $data['current_page'] = 'Dashboard';
+        $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
         $this->view('templates/admin/admin_sidebar', $data);
         $this->view('admin/dashboard');
         $this->view('templates/admin/footer_nav');
@@ -28,7 +30,8 @@ class Admin extends Controller
 
     public function form_members()
     {
-        $data['head'] = 'Tambah';
+        $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
+        $data['head'] = 'Tambah Anggota';
         $data['current_page'] = 'tambah_members';
         $data['lastIdAnggota'] = $this->model('Anggota_model')->getLastIdAnggota();
         $data['dusun'] = $this->model('Daerah_model')->dusun_all();
@@ -39,15 +42,20 @@ class Admin extends Controller
 
     public function form_blogs()
     {
-        $data['head'] = 'Tambah';
+        $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
+        $data['blogs'] = $this->model('Blog_model')->blogsbyID($_SESSION['user_id']);
+        $data['total'] = $this->model('Blog_model')->countBlogsByAuthorId($_SESSION['user_id']);
+        $data['kategories'] = $this->model('Blog_model')->getKategories();
+        $data['head'] = 'Tambah Blogs';
         $data['current_page'] = 'tambah_blogs';
         $this->view('templates/admin/admin_sidebar', $data);
-        $this->view('blogs/tambah');
-        $this->view('templates/admin/footer_nav');
+        $this->view('blogs/tambah', $data);
+        $this->view('templates/admin/blog_footer');
     }
 
     public function daftar_anggota()
     {
+        $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
         $data['head'] = 'Daftar Anggota';
         $data['members'] = $this->model('Anggota_model')->list_anggota();
         $data['current_page'] = 'daftar_anggota';
@@ -57,6 +65,7 @@ class Admin extends Controller
     }
     public function reports()
     {
+        $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
         $data['head'] = 'Laporan';
         $data['members'] = $this->model('Anggota_model')->list_anggota();
         $data['current_page'] = 'reports';

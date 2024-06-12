@@ -48,6 +48,49 @@
             height: 80vh;
             overflow-y: scroll;
         }
+
+        .profile-img {
+            width: 10rem;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            /* CSS untuk menampilkan hanya elemen yang dipilih */
+            .printable,
+            .printable * {
+                visibility: visible;
+            }
+
+            .btn-print {
+                visibility: hidden;
+            }
+
+            /* Memastikan elemen yang dipilih berada di posisi awal saat mencetak */
+        }
+
+        /* Define the default disabled style */
+        #viewMemberBtn:disabled {
+            background-color: grey;
+            padding: 8px;
+            cursor: not-allowed;
+        }
+
+        /* Define the enabled style */
+        #viewMemberBtn.enabled {
+            background-color: #0080ff;
+            padding: 8px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Optional: Hover effect for enabled button */
+        #viewMemberBtn.enabled:hover {
+            background-color: #00509f;
+            padding: 8px;
+        }
     </style>
 
 
@@ -78,7 +121,7 @@
             <nav class="mt-4 p-2">
                 <div class="p-4 gap-2" style="text-align: left;">
                     <label for="menu" style="text-transform: uppercase;" class="block text-md p-2 font-medium text-gray-400 uppercase">Menu</label>
-                    <br>
+                    <hr>
                     <a href="<?= BASEURL; ?>/admin/dashboard" class="block text-md hover:bg-gray-600 p-2  <?= ($data['current_page'] == 'Dashboard') ? ' text-white bg-gray-600' : 'text-gray-400  hover:text-white' ?>" aria-current="">Dashboard</a>
                     <div x-data="{ open: false }" class="relative mt-2">
                         <button @click="open = !open" class="flex justify-between items-center w-full text-left text-md hover:bg-gray-600 p-2 text-gray-400 hover:text-white <?= ($data['current_page'] == 'tambah_members' || $data['current_page'] == 'tambah_blogs') ? 'text-white bg-gray-600' : '' ?>">
@@ -89,12 +132,15 @@
                         </button>
                         <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-2" x-cloak class="origin-top-left mt-2 w-full rounded-md  bg-gray-800">
                             <a href="<?= BASEURL; ?>/admin/form_members" class="block px-4 py-2 text-md text-gray-400 hover:bg-gray-500 <?= ($data['current_page'] == 'tambah_members') ? 'text-white bg-gray-600' : '' ?>">Tambah Anggota</a>
-                            <a href="<?= BASEURL; ?>/admin/form_blogs" class="block px-4 py-2 text-md text-gray-400 hover:bg-gray-500 <?= ($data['current_page'] == 'tambah_blogs') ? 'text-white bg-gray-600' : '' ?>">Tambah Blog</a>
+                            <a href="<?= BASEURL; ?>/admin/form_blogs" class="block px-4 py-2 text-md text-gray-400 hover:bg-gray-500 <?= ($data['current_page'] == 'tambah_blogs') ? 'text-white bg-gray-600' : '' ?>">Blogs</a>
+                            <a href="<?= BASEURL; ?>/approve" class="block px-4 py-2 text-md text-gray-400 hover:bg-gray-500 <?= ($data['current_page'] == 'approve') ? 'text-white bg-gray-600' : '' ?>">Approve</a>
                         </div>
                     </div>
 
                     <a href="<?= BASEURL; ?>/admin/daftar_anggota" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'daftar_anggota') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Daftar Anggota</a>
                     <a href="<?= BASEURL; ?>/admin/reports" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'reports') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Laporan Kegiatan</a>
+                    <hr>
+                    <a href="<?= BASEURL; ?>/auth/profile" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'profile_admin') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Profile</a>
                 </div>
             </nav>
         </div>
@@ -182,7 +228,7 @@
                                                 <button @click="open = !open" type="button" class="relative flex max-w-md items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                                     <span class="absolute -inset-1.5"></span>
                                                     <span class="sr-only">Open user menu</span>
-                                                    <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                                    <img class="h-12 w-12 rounded-full" src="<?= BASEURL ?>/img/<?= $data['foto'] ?>" alt="">
                                                 </button>
                                             <?php endif; ?>
                                         </div>
@@ -203,3 +249,24 @@
             </nav>
             <!-- content -->
             <div class="flex-grow p-8 isi">
+                <!-- Breadcrumbs -->
+                <nav class="flex" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                        <li class="inline-flex items-center">
+                            <a href="<?= BASEURL ?>/admin" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                                </svg>
+                                Admin
+                            </a>
+                        </li>
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                                </svg>
+                                <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400"><?= $data['head'] ?></span>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>

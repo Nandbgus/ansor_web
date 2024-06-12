@@ -3,7 +3,12 @@
 </div>
 <!-- Toggle dark mode -->
 <script>
-    $('#example').DataTable({
+    function uploadImage() {
+        document.getElementById("uploadForm").submit();
+    }
+
+
+    var table = $('#example').DataTable({
 
         select: {
             style: 'os',
@@ -131,6 +136,41 @@
 
     });
 
+    // Initial check for selected rows
+    checkSelectedRows();
+
+    table.on('select deselect', function() {
+        checkSelectedRows();
+    });
+
+    function checkSelectedRows() {
+        var selectedRowsCount = table.rows({
+            selected: true
+        }).count();
+        var viewMemberBtn = $('#viewMemberBtn');
+        if (selectedRowsCount === 0) {
+            viewMemberBtn.prop('disabled', true).removeClass('enabled');
+        } else {
+            viewMemberBtn.prop('disabled', false).addClass('enabled');
+        }
+    }
+
+    $('#viewMemberBtn').on('click', function() {
+        var data = table.rows({
+            selected: true
+        }).data();
+        if (data.length > 0) {
+            var idMember = data[0][1]; // Mengambil ID Member dari kolom kedua
+            $('#id_member_input').val(idMember); // Set nilai input dengan id_member
+            $('#memberForm').submit(); // Submit form
+        } else {
+            alert('Please select a member first.');
+        }
+    });
+
+
+
+
     // Menangkap elemen select dusun
     var selectDusun = document.querySelector('select[name="id_dusun"]');
     var lastIdAnggota = '<?= $data['lastIdAnggota']["id"] ?? "XII265DEFAULT0" ?>'; // ID anggota terakhir atau default
@@ -170,6 +210,14 @@
         const year = date.getFullYear();
         return day + ' ' + monthNames[monthIndex] + ' ' + year;
     }
+
+    // Ambil elemen input pencarian
+    const searchInput = document.getElementById('searchInput');
+
+    // Ambil daftar blog
+    const blogList = document.getElementById('blogList').querySelectorAll('.p-6');
+
+    // Tambahkan event listener untuk input pencarian
 </script>
 
 </body>
