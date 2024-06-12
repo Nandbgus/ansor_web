@@ -15,8 +15,14 @@ class Blog_model
 
     public function isiSemua()
     {
-        $this->db->query('SELECT * FROM ' . $this->table);
-        return $this->db->resultSet();
+        $this->db->query('SELECT b.*, m.nama_a FROM ' . $this->table . ' b JOIN members m ON b.id_author = m.id');
+        $blogs = $this->db->resultSet();
+
+        foreach ($blogs as &$blog) {
+            $blog['kategories'] = $this->getCategoriesByBlogId($blog['id_blog']);
+        }
+
+        return $blogs;
     }
 
     public function blogsbyID($userId)
@@ -103,5 +109,4 @@ class Blog_model
 
         return $blog;
     }
-
 }

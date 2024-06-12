@@ -6,9 +6,9 @@ class Anggota extends Controller
     {
         $data['head'] = "Dashboard Anggota";
         $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
-        $data['members'] = $this->model('Anggota_model')->list_anggota();
+        $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
         $this->view('templates/anggota/anggota_header', $data);
-        $this->view('anggota/dashboard');
+        $this->view('anggota/dashboard', $data);
         $this->view('templates/anggota/anggota_footer');
     }
 
