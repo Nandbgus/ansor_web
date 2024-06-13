@@ -13,9 +13,6 @@
             <div>
                 <input type="submit" value="Login" class="w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             </div>
-            <div>
-                <p>Don't have an account? <a href="<?= BASEURL ?>/auth/" class="underline">Sign up here</a></p>
-            </div>
         </form>
     </div>
 </div>

@@ -802,6 +802,10 @@ video {
   height: 1.5rem;
 }
 
+.h-1\/2 {
+  height: 50%;
+}
+
 .h-10 {
   height: 2.5rem;
 }
@@ -928,14 +932,6 @@ video {
 
 .flex-grow {
   flex-grow: 1;
-}
-
-.table-fixed {
-  table-layout: fixed;
-}
-
-.border-collapse {
-  border-collapse: collapse;
 }
 
 .origin-top-left {

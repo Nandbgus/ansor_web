@@ -5,10 +5,13 @@ class Auth extends Controller
 
     public function index()
     {
-        $data['head'] = "Register";
-        $this->view('templates/auth', $data);
-        $this->view('auth/register');
-        $this->view('templates/footer');
+        if (isset($_SESSION['user_id'])) {
+            // Jika pengguna belum login, arahkan ke halaman login
+            header("Location: " . BASEURL . "/auth/login");
+            exit();
+        } else {
+            header("Location: " . BASEURL . "/auth/login");
+        }
     }
 
 
@@ -49,7 +52,7 @@ class Auth extends Controller
                     if ($user->is_admin) {
                         header("Location: " . BASEURL . "/admin/dashboard");
                     } else {
-                        header("Location: " . BASEURL . "/home");
+                        header("Location: " . BASEURL . "/anggota");
                     }
                     exit();
                 } else {
@@ -64,7 +67,7 @@ class Auth extends Controller
                 if ($_SESSION['is_admin']) {
                     header("Location: " . BASEURL . "/admin/dashboard");
                 } else {
-                    header("Location: " . BASEURL . "/anggota/index");
+                    header("Location: " . BASEURL . "/anggota");
                 }
                 exit();
             }
@@ -125,7 +128,7 @@ class Auth extends Controller
             $data['kegiatan'] = $userModel->semua_kegiatan();
             $this->view('templates/anggota/anggota_header', $data);
             $this->view('auth/profile', $data);
-            $this->view('templates/anggota/footer_nav');
+            $this->view('templates/anggota/anggota_footer');
         }
     }
 

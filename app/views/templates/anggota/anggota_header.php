@@ -13,4 +13,6 @@
     <script src="/ansor/public/js/datatables.min.js"></script>
 </head>
 
-<body class="text-gray-800 p-4">
+<body class="h-full" x-data="{ darkMode: false, sidebarOpen: false, toggleDarkMode() { this.darkMode = !this.darkMode } }" :class="{ 'dark': darkMode }">
+
+    <div class="flex h-full w-full">

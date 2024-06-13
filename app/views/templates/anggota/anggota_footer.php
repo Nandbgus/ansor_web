@@ -1,3 +1,6 @@
+</div>
+</main>
+</div>
 <script>
     function uploadImage() {
         document.getElementById("uploadForm").submit();

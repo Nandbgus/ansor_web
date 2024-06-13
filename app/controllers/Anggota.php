@@ -5,12 +5,28 @@ class Anggota extends Controller
     public function index()
     {
         $data['head'] = "Dashboard Anggota";
+        $data['current_page'] = "Dashboard Anggota";
         $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
         $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
         $this->view('templates/anggota/anggota_header', $data);
+        $this->view('templates/anggota/nav_dash', $data);
         $this->view('anggota/dashboard', $data);
         $this->view('templates/anggota/anggota_footer');
     }
+
+    public function profile()
+    {
+        $data['head'] = "User Profile";
+        $data['current_page'] = "Profile_anggota";
+        $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
+        $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
+        $data['kegiatan'] = $this->model('User_model')->semua_kegiatan();
+        $this->view('templates/anggota/anggota_header', $data);
+        $this->view('templates/anggota/nav_dash', $data);
+        $this->view('auth/profile', $data);
+        $this->view('templates/anggota/anggota_footer');
+    }
+
 
     // Controller
     public function uploadProfilePhoto()
