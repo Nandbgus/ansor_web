@@ -4,8 +4,13 @@ class Anggota extends Controller
 {
     public function index()
     {
+        if (!isset($_SESSION['user_id'])) {
+            // Jika pengguna belum login, arahkan ke halaman login
+            header("Location: " . BASEURL . "/auth/login");
+            exit();
+        }
         $data['head'] = "Dashboard Anggota";
-        $data['current_page'] = "Dashboard Anggota";
+        $data['current_page'] = "Dashboard";
         $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
         $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
         $this->view('templates/anggota/anggota_header', $data);
@@ -20,13 +25,12 @@ class Anggota extends Controller
         $data['current_page'] = "Profile_anggota";
         $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
         $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
-        $data['kegiatan'] = $this->model('User_model')->semua_kegiatan();
+        $data['kg'] = $this->model('Anggota_model')->getKegiatanByMember($_SESSION['user_id']);
         $this->view('templates/anggota/anggota_header', $data);
         $this->view('templates/anggota/nav_dash', $data);
         $this->view('auth/profile', $data);
         $this->view('templates/anggota/anggota_footer');
     }
-
 
     // Controller
     public function uploadProfilePhoto()
@@ -47,11 +51,29 @@ class Anggota extends Controller
 
             // Redirect ke halaman profil setelah selesai
             if ($result) {
-                header("Location: " . BASEURL . "/auth/profile");
-                exit();
+                if ($_SESSION['is_admin']) {
+                    header("Location: " . BASEURL . "/auth/profile");
+                    exit();
+                } else {
+                    header("Location: " . BASEURL . "/anggota/profile");
+                }
             } else {
                 echo "Gagal mengunggah foto profil.";
             }
         }
+    }
+
+    public function sertifikat()
+    {
+        $data['head'] = "Sertifikat Anggota";
+        $data['current_page'] = "sertifikat_anggota";
+        $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
+        $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
+        $kg = $this->model('Anggota_model')->getKegiatanByMember($_SESSION['user_id']);
+        $kg['kegiatan'] = $this->model('Anggota_model')->getAllKegiatan();
+        $this->view('templates/anggota/anggota_header', $data);
+        $this->view('templates/anggota/nav_dash', $data);
+        $this->view('anggota/report_sertifikat', $kg);
+        $this->view('templates/anggota/anggota_footer');
     }
 }

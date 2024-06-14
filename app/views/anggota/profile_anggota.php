@@ -7,18 +7,19 @@
         <h1 class="text-4xl font-bold text-gray-800"><?= $data['head'] ?></h1>
     </div>
     <?php $member = $data['member']; ?>
+
     <div class="mt-8 space-y-4">
         <div class="biodata pt-8">
             <div class="flex justify-center">
                 <div class="relative">
                     <?php if (isset($member['foto']) && !empty($member['foto'])) : ?>
                         <div class="mx-auto w-32 h-32 flex justify-center bg-cover sm:w-40 sm:h-40 relative -mt-16 border-[6px] border-white rounded-full overflow-hidden">
-                            <img class="object-cover object-center w-full" src="<?= BASEURL ?>/img/<?= $member['foto'] ?>" alt="Foto Profil">
+                            <img class="object-cover object-center w-full" src="<?= BASEURL ?>/img/profile/<?= $member['foto'] ?>" alt="Foto Profil">
                         </div>
                     <?php else : ?>
                         <!-- Default image -->
                         <div class="mx-auto w-32 h-32 flex justify-center bg-gray-300 sm:w-40 sm:h-40 relative -mt-16 border-[6px] border-white rounded-full overflow-hidden">
-                            <img class="object-cover object-center w-full" alt="Foto Profil" src="<?= BASEURL ?>/img/anyms.jpg" alt="">
+                            <img class="object-cover object-center w-full" alt="Foto Profil" src="<?= BASEURL ?>/img/profile/anyms.jpg" alt="">
                         </div>
                     <?php endif; ?>
                 </div>
@@ -52,17 +53,39 @@
 
 
         <!-- Activities Section -->
-        <div class="mt-8">
-            <h2 class="text-2xl font-semibold text-gray-800">Kegiatan yang Diikuti</h2>
-            <ul class="mt-2 list-disc list-inside text-gray-700">
-                <?php if (!empty($data['kegiatan'])) : ?>
-                    <?php foreach ($data['kegiatan'] as $activity) : ?>
-                        <li><?= htmlspecialchars($activity['nama_kegiatan'], ENT_QUOTES, 'UTF-8') ?></li>
-                    <?php endforeach; ?>
-                <?php else : ?>
-                    <li class="border px-4 py-2 text-center">No data available</li>
-                <?php endif; ?>
-            </ul>
+        <div class=" w-full bg-white shadow-md rounded-lg overflow-hidden my-10">
+            <div class="p-4 bg-gray-200">
+                <h2 class="text-2xl font-semibold">Pengalaman Kegiatan</h2>
+            </div>
+            <div class="divide-y divide-gray-200">
+                <?php foreach ($data['kg']['kegiatanList'] as $activity) : ?>
+                    <div class="p-4 flex">
+                        <?php if (isset($activity['foto']) && !empty($activity['foto'])) : ?>
+                            <div class="w-20 h-20 flex-shrink-0 mr-4">
+                                <img class="object-cover object-center w-full h-full rounded-lg" src="<?= BASEURL ?>/img/sertifikat/<?= $activity['foto'] ?>" alt="Foto Sertifikat">
+                            </div>
+                        <?php else : ?>
+                            <!-- Default image -->
+                            <div class="w-20 h-20 flex-shrink-0 mr-4 bg-gray-300 rounded-lg">
+                                <img class="object-cover object-center w-full h-full rounded-lg" src="<?= BASEURL ?>/img/sertifikat/anyms.jpg" alt="Foto Sertifikat">
+                            </div>
+                        <?php endif; ?>
+                        <div class="flex-1">
+                            <p class="font-semibold"><?= $activity['nama_kegiatan'] ?></p>
+                            <p class="text-sm text-gray-500">Dilaksanakan pada: <span class="text-blue-500"><?= $activity['tanggal_kegiatan'] ?></span></p>
+                            <p class="text-sm">Status:
+                                <?php if ($activity['status_verif'] == 'approve') : ?>
+                                    <span class="text-green-500"><?= ucfirst($activity['status_verif']) ?></span>
+                                <?php elseif ($activity['status_verif'] == 'rejected') : ?>
+                                    <span class="text-red-500"><?= ucfirst($activity['status_verif']) ?></span>
+                                <?php else : ?>
+                                    <span class="text-gray-500"><?= ucfirst($activity['status_verif']) ?></span>
+                                <?php endif; ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 </div>

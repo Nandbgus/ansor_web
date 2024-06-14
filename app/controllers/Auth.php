@@ -34,7 +34,6 @@ class Auth extends Controller
 
                     // Set session user_id dan is_admin
                     $_SESSION['user_id'] = $user->id;
-                    $_SESSION['email'] = $user->email;
                     $_SESSION['is_admin'] = $user->is_admin;
 
                     // Simpan informasi pengguna tambahan seperti nama dan foto profil ke dalam session
@@ -116,6 +115,7 @@ class Auth extends Controller
             $data['head'] = "Admin Profile";
             $data['kegiatan'] = $userModel->semua_kegiatan();
             $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
+            $data['kg'] = $this->model('Anggota_model')->getKegiatanByMember($_SESSION['user_id']);
             $data['current_page'] = 'profile_admin';
             $this->view('templates/admin/admin_sidebar', $data);
             $this->view('auth/profile', $data);

@@ -75,20 +75,71 @@ class Anggota_model extends Controller
         return $this->db->single();
     }
 
-
-    public function getKegiatanByMemberId($idMember)
+    public function getAllKegiatan()
     {
-        $this->db->query("SELECT 
-                kegiatan.nama AS nama_kegiatan
-            FROM 
-                laporan_kegiatan
-            JOIN 
-                kegiatan ON laporan_kegiatan.id_kegiatan = kegiatan.id_kegiatan
-            WHERE 
-                laporan_kegiatan.id_anggota = :id");
-        $this->db->bind(':id', $idMember);
+        $this->db->query("SELECT * FROM kegiatan");
         return $this->db->resultSet();
     }
+
+
+
+    public function getKegiatanByMember($idMember)
+    {
+        // menyimpan kegiatan serta total
+        $this->db->query("SELECT 
+            kegiatan.nama AS nama_kegiatan, laporan_kegiatan.tanggal_kegiatan, laporan_kegiatan.status_verif, laporan_kegiatan.foto
+        FROM 
+            laporan_kegiatan
+        JOIN 
+            kegiatan ON laporan_kegiatan.id_kegiatan = kegiatan.id_kegiatan
+        WHERE 
+            laporan_kegiatan.id_anggota = :id");
+        $this->db->bind(':id', $idMember);
+        $kegiatanList = $this->db->resultSet();
+
+        // Mendapatkan total kegiatan
+        $this->db->query("SELECT 
+            COUNT(*) AS total_kegiatan
+        FROM 
+            laporan_kegiatan
+        WHERE 
+            id_anggota = :id");
+        $this->db->bind(':id', $idMember);
+        $totalKegiatan = $this->db->single();
+
+        // Menggabungkan hasil ke dalam satu array
+        return [
+            'kegiatanList' => $kegiatanList,
+            'totalKegiatan' => $totalKegiatan['total_kegiatan']
+        ];
+    }
+
+    public function saveFotoSertifikat($userId, $photoFile, $idKegiatan, $laporanID)
+    {
+        // Path penyimpanan foto
+        $uploadDir = 'F:\WebServer\laragon\www\ansor\public\img\sertifikat/';
+
+        // Periksa apakah foto sudah diunggah dengan benar
+        if ($photoFile['error'] === UPLOAD_ERR_OK) {
+            // Tentukan nama file baru
+            $photoFileName =  $userId . '_' . $idKegiatan . '.jpg';
+            // Simpan foto ke lokasi yang ditentukan
+            $targetFilePath = $uploadDir . $photoFileName;
+            if (move_uploaded_file($photoFile['tmp_name'], $targetFilePath)) {
+                // Perbarui informasi foto pengguna di database
+                $this->db->query("UPDATE laporan_kegiatan SET foto = :photoFileName WHERE id_laporan = :id");
+                $this->db->bind(':photoFileName', $photoFileName);
+                $this->db->bind(':id', $laporanID);
+                $this->db->execute();
+
+                header('Location: ' . BASEURL . '/anggota/sertifikat');
+                exit();
+            }
+        }
+
+        return false;
+    }
+
 
     public function update_status($id, $status)
     {

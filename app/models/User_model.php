@@ -8,7 +8,6 @@ class User_model extends Controller
     public $id;
     public $password;
     public $is_admin;
-    public $email;
 
     // Table Members
     public $nama_a;
@@ -56,7 +55,7 @@ class User_model extends Controller
     {
         $this->db->query("
             SELECT 
-                users.id, users.password, users.is_admin, users.email,
+                users.id, users.password, users.is_admin,
                 members.nama_a, members.no_hp, members.id_dusun, members.id_status, members.foto, members.rt,
                 dusun.nama dsn, dusun.id_desa,
                 desa.nama dsa,
@@ -78,7 +77,6 @@ class User_model extends Controller
         if ($row && password_verify($this->password,  $row['password'])) {
             // Set user properties
             $this->id = $row['id'];
-            $this->email = $row['email'];
             $this->is_admin = $row['is_admin'];
 
             // Set additional properties from joined tables
@@ -136,7 +134,7 @@ class User_model extends Controller
             return false; // Jika ukuran melebihi batas, hentikan proses
         }
         // Path penyimpanan foto
-        $uploadDir = 'F:\WebServer\laragon\www\ansor\public\img/';
+        $uploadDir = 'F:\WebServer\laragon\www\ansor\public\img\profile/';
 
         // Periksa apakah foto sudah diunggah dengan benar
         if ($photoFile['error'] === UPLOAD_ERR_OK) {

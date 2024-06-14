@@ -9,25 +9,53 @@ class Approve extends Controller
             header('Location: ' . BASEURL . '/auth/login');
             exit;
         }
-        
+
         $data['head'] = "Halaman Approve";
+        $data['current_page'] = 'approve';
+        $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
         $data['anggota'] = $this->model('Anggota_model')->list_anggota();
-        $this->view('templates/anggota/anggota_header', $data);
+        $data['permohonan'] = $this->model('Approve_model')->getAllRequest();
+        $this->view('templates/admin/admin_sidebar', $data);
         $this->view('admin/approve_member', $data);
-        $this->view('templates/anggota/anggota_footer');
+        $this->view('templates/admin/footer_nav');
     }
 
-    public function approve_status()
+    public function kirimPermintaan()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id']) && isset($_POST['status'])) {
-            $id = $_POST['id'];
-            $status = $_POST['status'];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['foto'])) {
+            $data = [
+                'id_anggota' => $_SESSION['user_id'],
+                'id_kegiatan' => trim($_POST['id_kegiatan']),
+                'tanggal_kegiatan' => trim($_POST['tanggal_kegiatan']),
+            ];
+            $photoFile = $_FILES['foto'];
+            $tanggalFormat = date('Ymd', strtotime($data['tanggal_kegiatan']));
+            $laporanID = $data['id_anggota'] . '_' . $tanggalFormat;
+            var_dump($laporanID);
+            if ($this->model('Approve_model')->kirimPermintaan($data)) {
+                $this->model('Anggota_model')->saveFotoSertifikat($data['id_anggota'], $photoFile, $data['id_kegiatan'], $laporanID);
+                header(BASEURL . 'anggota/sertifikat');
+            } else {
+                die('ada yang salah');
+                var_dump('error ');
+            }
+        } else {
+            $data = [
+                'id_kegiatan' => '',
+                'tanggal_kegiatan' => '',
+                'foto' => '',
+            ];
+        }
+    }
 
-            echo "ID: " . $id . "<br>";
-            echo "status: " . $status . "<br>";
-            $this->model('Anggota_model')->update_status($id, $status);
-
-            header('Location: ' . BASEURL . '/approve');
+    public function approve_status($id_anggota, $status)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($this->model('Approve_model')->updateStatus($id_anggota, $status)) {
+                header('Location: ' . BASEURL . '/approve');
+            } else {
+                die("An error has occurred");
+            }
             exit;
         }
     }

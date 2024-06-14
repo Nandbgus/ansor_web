@@ -11,11 +11,14 @@ class Profile extends Controller
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $idMember = $_POST['id_member'];
             $data['head'] = 'Detail Anggota';
-            $data['kegiatan'] = $this->model('Anggota_model')->getKegiatanByMemberId($idMember);
+            $data['current_page'] = 'Profile Member Admin';
+            $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
+            $data['kegiatan'] = $this->model('Anggota_model')->getKegiatanByMember($idMember);
             $data['member'] = $this->model('Anggota_model')->getAnggotaById($idMember);
-            $this->view('templates/anggota/anggota_header', $data);
+            $data['kg'] = $this->model('Anggota_model')->getKegiatanByMember($idMember);
+            $this->view('templates/admin/admin_sidebar', $data);
             $this->view('anggota/profile_anggota', $data);
-            $this->view('templates/anggota/anggota_footer', $data);
+            $this->view('templates/admin/footer_nav');
         }
     }
 }

@@ -228,7 +228,7 @@
                                                 <button @click="open = !open" type="button" class="relative flex max-w-md items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                                     <span class="absolute -inset-1.5"></span>
                                                     <span class="sr-only">Open user menu</span>
-                                                    <img class="h-12 w-12 rounded-full" src="<?= BASEURL ?>/img/<?= $data['foto'] ?>" alt="">
+                                                    <img class="h-12 w-12 rounded-full" src="<?= BASEURL ?>/img/profile/<?= $data['foto'] ?>" alt="">
                                                 </button>
                                             <?php endif; ?>
                                         </div>

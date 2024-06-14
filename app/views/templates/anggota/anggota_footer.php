@@ -54,9 +54,6 @@
         $('#member-details').show();
     });
 
-
-
-
     // Menangkap elemen select dusun
     var selectDusun = document.querySelector('select[name="id_dusun"]');
     var lastIdAnggota = '<?= $data['lastIdAnggota']["id"] ?? "XII265DEFAULT0" ?>'; // ID anggota terakhir atau default
