@@ -125,8 +125,12 @@ class Auth extends Controller
         } else {
             // Jika pengguna bukan admin, arahkan ke tampilan pengguna biasa
             $data['head'] = "User Profile";
-            $data['kegiatan'] = $userModel->semua_kegiatan();
+            $data['current_page'] = "Profile_anggota";
+            $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
+            $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
+            $data['kg'] = $this->model('Anggota_model')->getKegiatanByMember($_SESSION['user_id']);
             $this->view('templates/anggota/anggota_header', $data);
+            $this->view('templates/anggota/nav_dash', $data);
             $this->view('auth/profile', $data);
             $this->view('templates/anggota/anggota_footer');
         }

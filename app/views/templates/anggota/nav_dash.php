@@ -21,7 +21,7 @@
             </nav>
         </div>
 
-        <main class="w-full">
+        <main class="w-full h-full">
             <nav class="border shadow-md p-2 bg-white">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 items-center justify-between">
@@ -124,7 +124,7 @@
                         </div>
             </nav>
             <!-- content -->
-            <div class="flex-grow p-8 h-[25rem] lg:h-[30rem] md:h-full isi overflow-y-scroll">
+            <div class="flex-grow p-8 h-full lg:h-[30rem] md:h-full isi overflow-y-scroll">
                 <!-- Breadcrumbs -->
                 <nav class="flex" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">

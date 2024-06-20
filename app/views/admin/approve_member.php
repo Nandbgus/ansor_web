@@ -1,43 +1,59 @@
 <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+    <div class="overflow-x-auto">
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <div class="min-w-full overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Nama Pemohon</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Keterangan</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Tanggal</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Foto</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <?php foreach ($data['permohonan'] as $permintaan) : ?>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $permintaan['nama_anggota'] ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo $permintaan['nama'] ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo $permintaan['tanggal_kegiatan'] ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <?php if (isset($permintaan['foto']) && !empty($permintaan['foto'])) : ?>
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-14 w-14">
+                                                <img class="h-14 w-14 object-cover rounded-full" src="<?= BASEURL ?>/img/sertifikat/<?= $permintaan['foto'] ?>" alt="Foto Profil">
+                                            </div>
+                                        </div>
+                                    <?php else : ?>
+                                        <!-- Default image -->
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <img class="h-10 w-10 object-cover rounded-full" alt="Foto Profil" src="<?= BASEURL ?>/img/sertifikat/anyms.jpg">
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex">
+                                        <form action="<?= BASEURL ?>/approve/approve_status/<?php echo htmlspecialchars($permintaan['id_laporan']); ?>/approve" method="post">
+                                            <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-500 hover:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700 transition duration-150 ease-in-out">
+                                                Setujui
+                                            </button>
+                                        </form>
 
-    <table border="1" class="w-full">
-        <tr>
-            <th>Nama Pemohon</th>
-            <th>Keterangan</th>
-            <th>Tanggal</th>
-            <th>Foto</th>
-            <th>Aksi</th>
-        </tr>
-        <?php foreach ($data['permohonan'] as $permintaan) : ?>
-            <tr>
-                <td><?php echo $permintaan['nama_anggota'] ?></td>
-                <td><?php echo $permintaan['nama'] ?></td>
-                <td><?php echo $permintaan['tanggal_kegiatan'] ?></td>
-                <td><?php if (isset($permintaan['foto']) && !empty($permintaan['foto'])) : ?>
-                        <div class="mx-auto w-32 h-32 flex justify-center bg-cover sm:w-40 sm:h-40 relative overflow-hidden">
-                            <img class="object-cover object-center w-full" src="<?= BASEURL ?>/img/sertifikat/<?= $permintaan['foto'] ?>" alt="Foto Profil">
-                        </div>
-                    <?php else : ?>
-                        <!-- Default image -->
-                        <div class="mx-auto w-32 h-32 flex justify-center bg-gray-300 sm:w-40 sm:h-40 relative overflow-hidden">
-                            <img class="object-cover object-center w-full" alt="Foto Profil" src="<?= BASEURL ?>/img/sertifikat/anyms.jpg" alt="">
-                        </div>
-                    <?php endif; ?>
-                </td>
-                <td>
-                    <form action="<?= BASEURL ?>/approve/approve_status/<?php echo htmlspecialchars($permintaan['id_laporan']); ?>/approve" method="post">
-                        <button type="submit" class="bg-green-500 w-full hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                            Setujui
-                        </button>
-                    </form>
-
-                    <form action="<?= BASEURL ?>/approve/approve_status/<?php echo htmlspecialchars($permintaan['id_laporan']); ?>/rejected" method="post">
-                        <button type="submit" class="bg-red-500 w-full hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                            Tolak
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
+                                        <form action="<?= BASEURL ?>/approve/approve_status/<?php echo htmlspecialchars($permintaan['id_laporan']); ?>/rejected" method="post" class="ml-2">
+                                            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-700 transition duration-150 ease-in-out">
+                                                Tolak
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

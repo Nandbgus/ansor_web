@@ -1,6 +1,6 @@
 <!-- Profile Untuk Semua yang sudah login -->
 
-<div class="printable mx-auto max-w-7xl p-6 bg-white shadow-xl rounded-lg text-gray-900">
+<div id="elementToPrint" class=" printable mx-auto max-w-7xl p-6 bg-white shadow-xl rounded-lg text-gray-900">
     <div class="rounded-t-lg h-32 sm:h-60 overflow-hidden">
         <img class="object-cover object-top w-full" src='https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ' alt='Mountain'>
     </div>
@@ -50,11 +50,11 @@
         </section>
 
         <!-- Kegiatan -->
-        <div class=" w-full bg-white shadow-md rounded-lg overflow-hidden my-10">
+        <div class="kegiatan w-full bg-white shadow-md rounded-lg overflow-hidden my-10">
             <div class="p-4 bg-gray-200">
                 <h2 class="text-2xl font-semibold">Pengalaman Kegiatan</h2>
             </div>
-            <div class="divide-y divide-gray-200">
+            <div class="divide-y divide-gray-200 ">
                 <?php foreach ($data['kg']['kegiatanList'] as $activity) : ?>
                     <div class="p-4 flex">
                         <?php if (isset($activity['foto']) && !empty($activity['foto'])) : ?>
@@ -86,6 +86,7 @@
         </div>
 
     </div>
-    <button class="bg-red-500 p-2 rounded-lg text-white btn-print px-4" onclick="window.print()">Print</button>
+
+    <button class="bg-red-500 no-print p-2 rounded-lg text-white btn-print px-4" onclick="print()">Print</button>
 
 </div>

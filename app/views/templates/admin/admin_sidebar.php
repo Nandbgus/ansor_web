@@ -54,21 +54,39 @@
         }
 
         @media print {
-            body * {
-                visibility: hidden;
+            @page {
+                margin: 0;
+                /* Remove default margin */
             }
 
-            /* CSS untuk menampilkan hanya elemen yang dipilih */
-            .printable,
-            .printable * {
+            body {
+                visibility: hidden;
+                margin: 0;
+                /* Remove default margin */
+                background-color: white !important;
+            }
+
+            .printable {
                 visibility: visible;
+                width: 100%;
+                /* Full width */
+                height: 100%;
+                /* Full height */
+                box-shadow: none;
+                /* Remove shadow */
+                border: none;
+                /* Remove border */
+                margin: 0;
             }
 
-            .btn-print {
-                visibility: hidden;
+            .kegiatan {
+                box-shadow: none;
             }
 
-            /* Memastikan elemen yang dipilih berada di posisi awal saat mencetak */
+            .no-print {
+                display: none;
+                /* Hide elements with this class */
+            }
         }
 
         /* Define the default disabled style */
@@ -93,13 +111,14 @@
         }
     </style>
 
-
+    <!-- alpine Js -->
     <script src="/ansor/public/js/alphine.js" defer></script>
     <script src="https://unpkg.com/@alpinejs/ui@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <!-- Data Tables -->
     <script src="/ansor/public/js/datatables.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.5.2/css/dataTables.dateTime.min.css">
-    <script src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.21/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body class="h-full" x-data="{ darkMode: false, sidebarOpen: false, toggleDarkMode() { this.darkMode = !this.darkMode } }" :class="{ 'dark': darkMode }">

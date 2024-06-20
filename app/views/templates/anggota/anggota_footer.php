@@ -1,7 +1,18 @@
 </div>
 </main>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/print-js@1.6.0/dist/print.min.js"></script>
 <script>
+    function printElement() {
+        printJS({
+            printable: 'elementToPrint',
+            type: 'html',
+            css: 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css'
+        });
+    }
+
+
     function uploadImage() {
         document.getElementById("uploadForm").submit();
     }

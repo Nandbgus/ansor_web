@@ -6,6 +6,7 @@
              <span class="mr-2 mb-2 px-2 py-1 border border-solid rounded text-sm"># <?= htmlspecialchars($category['nama_kategori'], ENT_QUOTES, 'UTF-8') ?></span>
          <?php endforeach; ?>
      </div>
+     <img class="object-cover object-center w-24" src="<?= BASEURL ?>/img/blog/<?= $data['blog']['foto_blogs'] ?>" alt="">
      <div class="text-gray-700 leading-relaxed">
          <?= nl2br(htmlspecialchars($data['blog']['body'], ENT_QUOTES, 'UTF-8')) ?>
      </div>

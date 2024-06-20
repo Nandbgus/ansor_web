@@ -4,6 +4,13 @@ class Profile extends Controller
 {
     public function index()
     {
+        if (isset($_SESSION['user_id'])) {
+            // Jika pengguna belum login, arahkan ke halaman login
+            header("Location: " . BASEURL . "/auth/login");
+            exit();
+        } else {
+            header("Location: " . BASEURL . "/auth/login");
+        }
     }
 
     public function showMemberProfile()

@@ -16,12 +16,15 @@
 
           </div>
           <div x-show="!isMinimizedForm" class="p-4">
-               <form action="<?= BASEURL ?>/blog/tambah_blog" method="POST">
+               <form action="<?= BASEURL ?>/blog/tambah_blog" method="POST" enctype="multipart/form-data">
                     <label for="judul" class="block text-gray-700 text-sm font-bold mb-2">Judul</label>
                     <input id="judul" name="judul" type="text" class="border border-solid border-gray-300 px-2 py-1 rounded-md w-full mb-4" required>
 
                     <label for="body" class="block text-gray-700 text-sm font-bold mb-2">Body</label>
                     <textarea id="body" name="body" class="border border-solid border-gray-300 px-2 py-1 rounded-md w-full mb-4" rows="5" required></textarea>
+
+                    <label for="foto" class="block text-gray-700 text-sm font-bold mb-2">Foto</label>
+                    <input type="file" id="foto" name="foto" class="border border-solid border-gray-300 px-2 py-1 rounded-md w-full mb-4" rows="5" accept="image/*" required></input>
 
                     <label for="kategori" class="block text-gray-700 text-sm font-bold mb-2">Kategori</label>
                     <select id="kategori" name="kategori" class="border border-solid border-gray-300 px-2 py-1 rounded-md w-full mb-4" required>
@@ -57,6 +60,7 @@
                               <a class="hover:text-blue-300" href="<?= BASEURL ?>/blog/detail_blog?id=<?= $isi['id_blog'] ?>">
                                    <h2 class="text-3xl font-bold mb-4"><?= htmlspecialchars($isi["judul"], ENT_QUOTES, 'UTF-8') ?></h2>
                               </a>
+                              <img class="w-24 mb-2" src="<?= BASEURL ?>/img/blog/<?= $isi['foto_blogs'] ?>" alt="">
                               <?php foreach ($isi['kategories'] as $category) : ?>
                                    <span class="mr-2 mb-2 px-2 py-1 bg-gray-200 rounded text-sm"><?= htmlspecialchars($category['nama_kategori'], ENT_QUOTES, 'UTF-8') ?></span>
                               <?php endforeach; ?>

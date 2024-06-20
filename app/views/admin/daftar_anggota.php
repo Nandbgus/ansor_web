@@ -1,4 +1,4 @@
-<table id="example" class="display nowrap " style="width:100%">
+<table id="example" class="display nowrap printable " style="width:100%">
     <thead class="bg-white">
         <tr>
             <th class="w-1/12 px-4 py-4 border border-gray-300 ">No</th>

@@ -98,22 +98,57 @@
                                     }
                                 };
                             }
+                            // Set page size, orientation, and margins
                             doc.pageSize = 'A4';
+                            doc.pageOrientation = 'landscape';
                             doc.pageMargins = [20, 20, 20, 20]; // left, top, right, bottom
-                            doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
 
-
-                            // Add date above the table
-                            doc.content.splice(1, 0, {
-                                text: 'Date: ' + formattedDate,
-                                alignment: 'center',
-                                margin: [0, 0, 0, 10]
+                            // Access table node from document content
+                            var tableNode = doc.content.find(function(node) {
+                                return node.table;
                             });
 
-                            // Adjust the table layout only if it exists
-                            if (doc.content.length > 2 && doc.content[2].table) {
-                                var table = doc.content[2].table;
-                                table.widths = Array(table.body[0].length + 1).join('*').split('');
+                            if (tableNode) {
+                                // Customize table layout
+                                tableNode.layout = {
+                                    hLineWidth: function(i, node) {
+                                        return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                                    },
+                                    vLineWidth: function(i, node) {
+                                        return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                                    },
+                                    hLineColor: function(i, node) {
+                                        return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                                    },
+                                    vLineColor: function(i, node) {
+                                        return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                                    },
+                                    paddingLeft: function(i, node) {
+                                        return 10;
+                                    },
+                                    paddingRight: function(i, node) {
+                                        return 10;
+                                    },
+                                    paddingTop: function(i, node) {
+                                        return 5;
+                                    },
+                                    paddingBottom: function(i, node) {
+                                        return 5;
+                                    }
+                                };
+
+                                // Menghitung lebar maksimal dokumen PDF
+                                var pdfWidth = doc.internal.pageSize.width - 40; // dikurangi dengan margin 20 di setiap sisi
+
+                                // Set kolom dengan persentase dari lebar dokumen
+                                var colWidths = [];
+                                colWidths.push(pdfWidth * 0.1); // 10% dari lebar
+                                colWidths.push(pdfWidth * 0.4); // 40% dari lebar
+                                colWidths.push(pdfWidth * 0.4); // 40% dari lebar
+                                colWidths.push(pdfWidth * 0.1); // 10% dari lebar
+
+                                // Manually set column widths (example)
+                                tableNode.widths = ['auto', '*', '*', 'auto', '*'];
                             }
 
                         }

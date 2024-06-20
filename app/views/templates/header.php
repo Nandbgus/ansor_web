@@ -1,140 +1,132 @@
-<html class="h-full bg-gray-100">
+        <!DOCTYPE html>
+        <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $data['head'] ?></title>
-    <link rel="stylesheet" href="/ansor/public/css/output.css">
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script> -->
-</head>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title><?= $data['head'] ?></title>
+            <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.min.js"></script>
+            <link rel="stylesheet" href="/ansor/public/css/output.css">
+            <!-- Masukkan Alpine.js -->
+            <!-- <script src="/ansor/public/js/alphine.js" defer></script> -->
+            <script src="/ansor/public/js/searchFilter.js" defer></script>
+            <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+        </head>
 
-<body class="h-full ">
-    <div class="min-h-full" x-data="{open:false}">
-        <nav class="bg-gray-800">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="flex h-16 items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-                        </div>
-                        <div class="hidden md:block">
-                            <div class="ml-10 flex items-baseline space-x-4">
-                                <?php
-                                $current_page = basename($_SERVER['REQUEST_URI'], ".php");
-                                ?>
-                                <a href="<?= BASEURL; ?>/" class="<?= ($current_page == '' || $current_page == 'index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
-                                <a href="<?= BASEURL; ?>/blog" class="<?= ($current_page == 'blog') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium">Blog</a>
-                                <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) : ?>
-                                    <a href="<?= BASEURL; ?>/admin/dashboard" class="<?= ($current_page == 'dashboard') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium">Dashboard (Admin)</a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="ml-4 flex items-center md:ml-6">
-                            <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                <span class="absolute -inset-1.5"></span>
-                                <span class="sr-only">View notifications</span>
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                                </svg>
-                            </button>
-
-                            <!-- Profile dropdown -->
-                            <div class="relative ml-3" x-data="{ open: false }">
-                                <div>
-                                    <!-- Tampilkan tombol login jika pengguna belum login -->
-                                    <?php if (!isset($_SESSION['user_id'])) : ?>
-                                        <div class="relative ml-3" x-data="{ open: false }">
-                                            <div>
-                                                <button @click="open = !open" type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                                    <span class="absolute -inset-1.5"></span>
-                                                    <span class="sr-only">Open user menu</span>
-                                                    <img class="h-8 w-8 rounded-full" src="https://static.vecteezy.com/system/resources/previews/026/530/349/non_2x/anonymous-person-silhouette-icon-vector.jpg" alt="">
-                                                </button>
-                                            </div>
-                                            <!-- Dropdown -->
-                                            <div x-show="open" @click.away="open = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                                                <a href="<?= BASEURL; ?>/auth/login" class="block px-4 py-2 text-sm text-gray-700 hover:underline " role="menuitem" tabindex="-1" id="user-menu-item-0">Log In</a>
-                                            </div>
-                                        </div>
-                                    <?php else : ?>
-
-
-                                        <!-- Tampilkan dropdown profil jika pengguna sudah login -->
-                                        <button @click="open = !open" type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                            <span class="absolute -inset-1.5"></span>
-                                            <span class="sr-only">Open user menu</span>
-                                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                        </button>
-                                    <?php endif; ?>
-                                </div>
-
-                                <!-- Tampilkan dropdown menu jika pengguna sudah login -->
-                                <div x-show="open" @click.away="open = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                                    <?php if (isset($_SESSION['user_id'])) : ?>
-                                        <!-- Tampilkan menu dropdown jika pengguna sudah login -->
-                                        <a href="<?= BASEURL ?>/auth/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                                        <a href="<?= BASEURL; ?>/auth/logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            <!-- End Profile -->
-                            <div class="-mr-2 flex md:hidden">
-                                <button @click="open = !open" type="button" class="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-controls="mobile-menu" aria-expanded="false">
+        <body class="h-full bg-gray-100">
+            <div class="min-h-full" x-data="{open:false}">
+                <div x-data="{ mobileMenuOpen: false, userMenuOpen: false }" class="bg-gray-800">
+                    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                        <div class="relative flex h-16 items-center justify-between">
+                            <!-- Mobile menu button -->
+                            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                                <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
                                     <span class="absolute -inset-0.5"></span>
                                     <span class="sr-only">Open main menu</span>
-                                    <!-- Ketika menu terbuka, tampilkan ikon close (x), jika tidak, tampilkan ikon hamburger -->
-                                    <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" x-show="!open">
+                                    <!-- Icon when menu is closed -->
+                                    <svg x-show="!mobileMenuOpen" class="block h-6 w-6 ease-in  " fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                                     </svg>
-                                    <!-- Menu open: "block", Menu closed: "hidden" -->
-                                    <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" x-show="open">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    <!-- Icon when menu is open -->
+                                    <svg x-show="mobileMenuOpen" class="block h-6 w-6 ease-in-out text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
 
                                 </button>
                             </div>
+
+                            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+
+                                <!-- Desktop Menu -->
+                                <div class="hidden sm:ml-6 sm:block">
+                                    <div class="flex space-x-4">
+                                        <!-- Menu Items -->
+                                        <?php
+                                        $current_page = basename($_SERVER['REQUEST_URI'], ".php");
+                                        ?>
+                                        <a href="<?= BASEURL; ?>/" class="<?= ($data['current_page'] == 'Home' || $data['current_page'] == 'index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
+                                        <a href="<?= BASEURL; ?>/blog" class="<?= ($data['current_page'] == 'Blog' || $data['current_page'] == 'blog') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Blog</a>
+                                        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) : ?>
+                                            <a href="<?= BASEURL; ?>/admin/dashboard" class="<?= ($data['current_page'] == 'dashboard') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium">Dashboard (Admin)</a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right-hand side icons -->
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                                <!-- Notifications button -->
+                                <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                    <span class="absolute -inset-1.5"></span>
+                                    <span class="sr-only">View notifications</span>
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0">
+                                        </path>
+                                    </svg>
+                                </button>
+
+                                <!-- Profile dropdown -->
+                                <div class="relative ml-3" x-data="{ open: false }">
+                                    <div>
+                                        <!-- Tombol login jika belum login -->
+                                        <?php if (!isset($_SESSION['user_id'])) : ?>
+                                            <div class="relative ml-3" x-data="{ open: false }">
+                                                <div>
+                                                    <button @click="open = !open" type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                                        <span class="absolute -inset-1.5"></span>
+                                                        <span class="sr-only">Open user menu</span>
+                                                        <img class="h-8 w-8 rounded-full" src="<?= BASEURL ?>/img/profile/anyms.jpg" alt="">
+                                                    </button>
+                                                </div>
+                                                <!-- Dropdown -->
+                                                <div x-show="open" @click.away="open = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                                                    <a href="<?= BASEURL; ?>/auth/login" class="block px-4 py-2 text-sm text-gray-700 hover:underline " role="menuitem" tabindex="-1" id="user-menu-item-0">Log In</a>
+                                                </div>
+                                            </div>
+                                        <?php else : ?>
+                                            <!-- Dropdown profil jika sudah login -->
+                                            <button @click="open = !open" type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                                <span class="absolute -inset-1.5"></span>
+                                                <span class="sr-only">Open user menu</span>
+                                                <img class="h-8 w-8 rounded-full" src="<?= BASEURL ?>/img/profile/<?= $data['foto'] ?>" alt="">
+                                            </button>
+                                            <!-- Dropdown menu jika pengguna sudah login -->
+                                            <div x-show="open" @click.away="open = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                                                <?php if (isset($_SESSION['user_id'])) : ?>
+                                                    <a href="<?= BASEURL ?>/auth/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+                                                    <a href="<?= BASEURL; ?>/auth/logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- Mobile menu, show/hide based on menu state. -->
-                    <div class="md-hidden" id="mobile-menu" x-show="open">
-                        <div class="px-2 pt-2 pb-3 space-y-1">
-                            <a href="<?= BASEURL; ?>" class="<?= ($current_page == '' || $current_page == 'index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Home</a>
-                            <a href="<?= BASEURL; ?>/about" class="<?= ($current_page == 'about') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block px-3 py-2 rounded-md text-base font-medium">Biodata</a>
-                            <a href="<?= BASEURL; ?>/blog" class="<?= ($current_page == 'blog') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block px-3 py-2 rounded-md text-base font-medium">Blog</a>
+
+                    <!-- Mobile menu -->
+                    <div x-show="mobileMenuOpen" class="sm:hidden" id="mobile-menu">
+                        <div class="space-y-1 px-2 pb-3 pt-2">
+                            <!-- Menu Items -->
+                            <a href="<?= BASEURL; ?>/" class="<?= ($data['current_page'] == 'Home' || $data['current_page'] == 'index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Home</a>
+                            <a href="<?= BASEURL; ?>/blog" class="<?= ($data['current_page'] == 'Blog' || $data['current_page'] == 'blog') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Blog</a>
                             <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) : ?>
-                                <a href="<?= BASEURL; ?>/admin/dashboard" class="<?= ($current_page == 'blog') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+                                <a href="<?= BASEURL; ?>/admin/dashboard" class="<?= ($data['current_page'] == 'dashboard') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block rounded-md px-3 py-2 text-base font-medium">Dashboard (Admin)</a>
                             <?php endif; ?>
                         </div>
-                        <div class="pt-4 pb-3 border-t border-gray-700">
-                            <div class="flex items-center px-5">
-                                <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                </div>
-                                <div class="ml-3">
-                                    <div class="text-base font-medium leading-none text-white">Tom Cook</div>
-                                    <div class="text-sm font-medium leading-none text-gray-400">tom@example.com</div>
-                                </div>
-                            </div>
-                            <div class="mt-3 px-2 space-y-1">
-                                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
-                                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
-                                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</a>
-                            </div>
-                        </div>
                     </div>
 
-        </nav>
+                </div>
 
-        <header class="bg-white shadow">
-            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900"><?= $data['head'] ?></h1>
-            </div>
-        </header>
 
-        <main class="p-8">
+                <!-- Menandai halaman -->
+                <header class="bg-white shadow">
+                    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                        <h1 class="text-3xl font-bold tracking-tight text-gray-900"><?= $data['head'] ?></h1>
+                    </div>
+                </header>
 
-            <!-- Halaman TEST -->
+                <main class="p-8">
+
+                    <!-- Halaman TEST -->

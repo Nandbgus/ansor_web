@@ -14,23 +14,45 @@
 
     <style>
         @media print {
+            @page {
+                margin: 0;
+                /* Remove default margin */
+            }
+
             body {
                 visibility: hidden;
                 margin: 0;
-                padding: 0;
+                /* Remove default margin */
+                background-color: white !important;
             }
 
             .printable {
                 visibility: visible;
-                width: 100%;
-                padding: 20px;
-                box-sizing: border-box;
+                top: 0;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: none;
             }
 
-            .printable img {
+            .kegiatan {
+                box-shadow: none;
+            }
+
+            .no-print {
+                display: none;
+                /* Hide elements with this class */
+            }
+
+            .printable {
+                width: 100%;
                 max-width: 100%;
-                height: auto;
-                object-fit: contain;
+            }
+
+            .divide-y> :not([hidden])~ :not([hidden]) {
+                --tw-divide-y-reverse: 0;
+                border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+                border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
             }
         }
     </style>
@@ -38,4 +60,4 @@
 
 <body class="h-full" x-data="{ darkMode: false, sidebarOpen: false, toggleDarkMode() { this.darkMode = !this.darkMode } }" :class="{ 'dark': darkMode }">
 
-    <div class="flex h-full w-full">
+    <div class="flex h-full w-full ">
