@@ -50,18 +50,42 @@ class Blog extends Controller
         $this->view('blogs/index', $data);
         $this->view('templates/footer', $data);
     }
+
+
+    private function convertToJpg($tempFile, $targetFile)
+    {
+        $image = imagecreatefromstring(file_get_contents($tempFile));
+        if ($image !== false) {
+            imagejpeg($image, $targetFile, 85); // 85 adalah kualitas JPEG, sesuaikan kebutuhan Anda
+            imagedestroy($image);
+            return true;
+        } else {
+            return false;
+        }
+    }
     private function uploadFoto($foto, $id_blog)
     {
         if ($foto['error'] == 0) {
-            $uploadDir = 'F:\WebServer\laragon\www\ansor\public\img\blog/';
+            $uploadDir = 'F:/WebServer/laragon/www/ansor/public/img/blog/';
             $fileExtension = pathinfo($foto['name'], PATHINFO_EXTENSION);
             $targetFile = $uploadDir . $id_blog . '.' . $fileExtension;
+
+            // Handle JPG conversion if necessary
+            if ($fileExtension !== 'jpg' && $fileExtension !== 'jpeg') {
+                $tempFile = $foto['tmp_name'];
+                $jpgTargetFile = $uploadDir . $id_blog . '.jpg';
+                if ($this->convertToJpg($tempFile, $jpgTargetFile)) {
+                    return $id_blog . '.jpg';
+                } else {
+                    return null; // Konversi gagal
+                }
+            }
 
             if (move_uploaded_file($foto['tmp_name'], $targetFile)) {
                 return $id_blog . '.' . $fileExtension;
             }
         }
-        return null;
+        return null; // Upload gagal atau tidak ada file yang diunggah
     }
 
 

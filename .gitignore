@@ -1,1 +1,4 @@
 node_modules/
+public/img/blog/*.jpg
+public/img/profile/*.jpg
+public/img/sertifikat/*.jpg

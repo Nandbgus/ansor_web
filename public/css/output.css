@@ -880,6 +880,10 @@ video {
   height: 100%;
 }
 
+.h-auto {
+  height: auto;
+}
+
 .max-h-full {
   max-height: 100%;
 }
@@ -952,6 +956,10 @@ video {
   width: 100%;
 }
 
+.w-auto {
+  width: auto;
+}
+
 .min-w-full {
   min-width: 100%;
 }
@@ -974,6 +982,38 @@ video {
 
 .max-w-full {
   max-width: 100%;
+}
+
+.max-w-1 {
+  max-width: 0.25rem;
+}
+
+.max-w-lg {
+  max-width: 32rem;
+}
+
+.max-w-\[\] {
+  max-width: ;
+}
+
+.max-w-\[32rem\] {
+  max-width: 32rem;
+}
+
+.max-w-\[40rem\] {
+  max-width: 40rem;
+}
+
+.max-w-\[3rem\] {
+  max-width: 3rem;
+}
+
+.max-w-\[34rem\] {
+  max-width: 34rem;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
 }
 
 .flex-1 {
@@ -1344,6 +1384,14 @@ video {
   padding: 15rem;
 }
 
+.p-40 {
+  padding: 10rem;
+}
+
+.p-10 {
+  padding: 2.5rem;
+}
+
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1397,6 +1445,21 @@ video {
 .py-64 {
   padding-top: 16rem;
   padding-bottom: 16rem;
+}
+
+.py-40 {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
+
+.px-40 {
+  padding-left: 10rem;
+  padding-right: 10rem;
+}
+
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
 }
 
 .pb-3 {
@@ -2007,6 +2070,10 @@ video {
     padding: 2rem;
   }
 
+  .sm\:p-60 {
+    padding: 15rem;
+  }
+
   .sm\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -2091,6 +2158,14 @@ video {
     padding: 2rem;
   }
 
+  .md\:p-60 {
+    padding: 15rem;
+  }
+
+  .md\:p-40 {
+    padding: 10rem;
+  }
+
   .md\:px-20 {
     padding-left: 5rem;
     padding-right: 5rem;
@@ -2106,6 +2181,16 @@ video {
     padding-bottom: 2rem;
   }
 
+  .md\:py-60 {
+    padding-top: 15rem;
+    padding-bottom: 15rem;
+  }
+
+  .md\:py-40 {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
+
   .md\:text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
@@ -2117,6 +2202,18 @@ video {
     height: 30rem;
   }
 
+  .lg\:max-w-3xl {
+    max-width: 48rem;
+  }
+
+  .lg\:p-40 {
+    padding: 10rem;
+  }
+
+  .lg\:p-60 {
+    padding: 15rem;
+  }
+
   .lg\:px-10 {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
@@ -2125,6 +2222,11 @@ video {
   .lg\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .lg\:py-60 {
+    padding-top: 15rem;
+    padding-bottom: 15rem;
   }
 }
 

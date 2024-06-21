@@ -61,6 +61,21 @@
         modal.classList.remove('hidden');
     }
 
+    // Fungsi untuk memperbarui pratinjau gambar saat memilih gambar baru
+    document.getElementById('foto').onchange = function(event) {
+        if (event.target.files.length === 0) {
+            // If no file is selected (canceled), revert to the original image
+            document.getElementById('currentFoto').src = originalImageSrc;
+        } else {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('currentFoto').src = e.target.result;
+                openModal(e.target.result); // Open modal with the new image
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    };
+
     // Fungsi untuk menutup modal preview gambar
     document.getElementById('closeModal').onclick = function() {
         document.getElementById('modalPreview').classList.add('hidden');
@@ -77,6 +92,25 @@
     document.getElementById('currentFoto').onclick = function() {
         openModal(this.src);
     };
+
+    // Store the original image source
+    var originalImageSrc = document.getElementById('currentFoto').src;
+
+    // Fungsi untuk memperbarui pratinjau gambar saat memilih gambar baru
+    document.getElementById('foto').onchange = function(event) {
+        if (event.target.files.length === 0) {
+            // If no file is selected (canceled), revert to the original image
+            document.getElementById('currentFoto').src = originalImageSrc;
+        } else {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('currentFoto').src = e.target.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    };
+
+
 
     function printElement() {
         printJS({
