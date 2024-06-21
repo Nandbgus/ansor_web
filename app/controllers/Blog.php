@@ -50,7 +50,19 @@ class Blog extends Controller
         $this->view('blogs/index', $data);
         $this->view('templates/footer', $data);
     }
+    private function uploadFoto($foto, $id_blog)
+    {
+        if ($foto['error'] == 0) {
+            $uploadDir = 'F:\WebServer\laragon\www\ansor\public\img\blog/';
+            $fileExtension = pathinfo($foto['name'], PATHINFO_EXTENSION);
+            $targetFile = $uploadDir . $id_blog . '.' . $fileExtension;
 
+            if (move_uploaded_file($foto['tmp_name'], $targetFile)) {
+                return $id_blog . '.' . $fileExtension;
+            }
+        }
+        return null;
+    }
 
 
 
@@ -64,39 +76,31 @@ class Blog extends Controller
                 $body = $_POST['body'];
                 $foto = $_FILES['foto'];
                 $kategori = $_POST['kategori'];
-
-                // Mendapatkan id author dari sesi
                 $author = $_SESSION['user_id'];
 
-                $uploadDir = 'F:\WebServer\laragon\www\ansor\public\img\blog/';
-                $fileName = basename($foto['name']);
-                $targetFilePath = $uploadDir . $fileName;
-                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                // Memanggil model untuk menyimpan data blog
+                $id_blog = $this->model('Blog_model')->tambah_blog($judul, $body, '', $kategori, $author);
 
-                // Validasi file
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
-                if (in_array($fileType, $allowTypes)) {
-                    // Upload file ke server
-                    if (move_uploaded_file($foto['tmp_name'], $targetFilePath)) {
-                        // Memanggil model untuk menyimpan data blog
-                        $this->model('Blog_model')->tambah_blog($judul, $body, $fileName, $kategori, $author);
+                if ($id_blog) {
+                    // Upload foto dengan nama sesuai ID blog
+                    $fileName = $this->uploadFoto($foto, $id_blog);
 
-                        // Setelah data berhasil disimpan, lakukan pengalihan halaman atau tindakan lain yang sesuai
-                        header('Location: ' . BASEURL . '/admin/form_blogs');
-                    } else {
-                        // Jika upload gagal
-                        die('Gagal mengunggah foto.');
+                    if ($fileName) {
+                        // Update data blog dengan nama file yang baru diunggah
+                        $this->model('Blog_model')->updateBlogFoto($id_blog, $fileName);
                     }
+
+                    // Setelah data berhasil disimpan, lakukan pengalihan halaman atau tindakan lain yang sesuai
+                    header('Location: ' . BASEURL . '/admin/form_blogs');
                 } else {
-                    // Jika tipe file tidak diizinkan
-                    die('Tipe file tidak diizinkan.');
+                    die('Gagal menyimpan data blog.');
                 }
             } else {
-                // Jika data yang diperlukan tidak tersedia
                 die('Data tidak lengkap.');
             }
         }
     }
+
 
     public function detail_blog()
     {
@@ -110,6 +114,57 @@ class Blog extends Controller
             $this->view('templates/anggota/anggota_header', $data);
             $this->view('blogs/detail_blog', $data);
             $this->view('templates/anggota/anggota_footer');
+        }
+    }
+
+    public function detail_blog_admin()
+    {
+        // Pastikan parameter URL tersedia
+        if (isset($_GET['id'])) {
+            // Mendapatkan parameter URL
+            $id_blog = $_GET['id'];
+            // Ambil data blog berdasarkan id
+            $data['blog'] = $this->model('Blog_model')->blogsbyID($id_blog);
+            // Ambil semua kategori
+            $data['kategories'] = $this->model('Blog_model')->getKategories();
+            $data['blog'] = $this->model('Blog_model')->blogSelect($id_blog);
+            $data['head'] = "Detail Blog";
+            $this->view('templates/anggota/anggota_header', $data);
+            $this->view('blogs/detail_blog_admin', $data);
+            $this->view('templates/anggota/anggota_footer');
+        }
+    }
+
+    public function update_blog()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Ambil data dari form
+            $id_blog = $_POST['id_blog'];
+            $judul = $_POST['judul'];
+            $body = $_POST['body'];
+            // $kategori_ids = isset($_POST['kategori']) ? $_POST['kategori'] : []; // Array of selected categories
+            $foto = isset($_FILES['foto']) ? $_FILES['foto'] : null;
+            // $kategori_ids = implode(',', $_POST['kategori']); // menggabungkan kategori menjadi string CSV
+            $kategori_ids = implode(',', $_POST['kategori']);
+
+            // Upload Foto (jika ada)
+            $foto_blogs = $foto ? $this->uploadFoto($foto, $id_blog) : null;
+
+            // Update Blog di Database
+            $this->model('Blog_model')->updateBlogWithCategories($id_blog, $judul, $body, $foto_blogs, $kategori_ids);
+
+            // Redirect ke halaman detail blog
+            header('Location: ' . BASEURL . '/blog/detail_blog_admin?id=' . $id_blog);
+        }
+    }
+
+
+    public function hapus_blog()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id_blog = $_POST['id_blog'];
+            $this->model('Blog_model')->deleteBlog($id_blog);
+            header('Location: ' . BASEURL . '/blog');
         }
     }
 }

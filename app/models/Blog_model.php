@@ -150,7 +150,7 @@ class Blog_model
 
     public function getCategoriesByBlogId($blogId)
     {
-        $this->db->query('SELECT k.kategori nama_kategori FROM kategories k INNER JOIN blog_kategori bk ON k.id_kategori = bk.id_kategori WHERE bk.id_blog = :blog_id ');
+        $this->db->query('SELECT k.kategori nama_kategori, k.id_kategori FROM kategories k INNER JOIN blog_kategori bk ON k.id_kategori = bk.id_kategori WHERE bk.id_blog = :blog_id ');
         $this->db->bind(':blog_id', $blogId);
         return $this->db->resultSet();
     }
@@ -170,6 +170,7 @@ class Blog_model
         return $this->db->resultSet();
     }
 
+    // FUngsi Untuk Tambah Blog Baru
     public function tambah_blog($judul, $body, $foto, $kategori, $author)
     {
         // Misalnya, Anda bisa mengatur id_blog secara otomatis dengan mengambil data terakhir dari database
@@ -191,6 +192,84 @@ class Blog_model
         $this->db->bind(2, $kategori);
         $this->db->execute(); // Menggunakan execute() untuk pernyataan SQL INSERT
     }
+
+    // Fungsi Untuk Update Blog
+    public function updateBlogWithCategories($id_blog, $judul, $body, $foto_blogs, $kategori_ids)
+    {
+        // Update blog dengan informasi baru
+        $sql = "UPDATE blogs SET judul = :judul, body = :body";
+        $binds = [
+            ':judul' => $judul,
+            ':body' => $body,
+            ':id_blog' => $id_blog
+        ];
+
+        if ($foto_blogs) {
+            $sql .= ", foto_blogs = :foto_blogs";
+            $binds[':foto_blogs'] = $foto_blogs;
+        }
+
+        $sql .= " WHERE id_blog = :id_blog";
+
+        $this->db->query($sql);
+
+        foreach ($binds as $key => $value) {
+            $this->db->bind($key, $value);
+        }
+
+        $this->db->execute();
+
+        // Pastikan kategori_ids adalah array
+        if (!is_array($kategori_ids)) {
+            $kategori_ids = explode(',', $kategori_ids);
+        }
+
+        // Hilangkan duplikat dari kategori_ids
+        $kategori_ids = array_unique($kategori_ids);
+
+        // Update kategori blog
+        $this->updateBlogCategories($id_blog, $kategori_ids);
+    }
+
+    public function updateBlogCategories($id_blog, $kategori_ids)
+    {
+        // Hapus semua kategori yang terkait dengan blog
+        $this->db->query("DELETE FROM blog_kategori WHERE id_blog = :id_blog");
+        $this->db->bind(':id_blog', $id_blog);
+        $this->db->execute();
+
+        // Tambahkan kategori baru
+        $sql = "INSERT INTO blog_kategori (id_blog, id_kategori) VALUES ";
+        $values = [];
+        $binds = [':id_blog' => $id_blog];
+        foreach ($kategori_ids as $index => $id_kategori) {
+            $values[] = "(:id_blog, :id_kategori_{$index})";
+            $binds[":id_kategori_{$index}"] = $id_kategori;
+        }
+        $sql .= implode(", ", $values);
+
+        $this->db->query($sql);
+        foreach ($binds as $key => $value) {
+            $this->db->bind($key, $value);
+        }
+        $this->db->execute();
+    }
+
+
+
+    public function deleteBlog($id_blog)
+    {
+        // Delete related categories
+        $this->db->query("DELETE FROM blog_kategori WHERE id_blog = :id_blog");
+        $this->db->bind(':id_blog', $id_blog);
+        $this->db->execute();
+
+        // Delete blog itself
+        $this->db->query("DELETE FROM blogs WHERE id_blog = :id_blog");
+        $this->db->bind(':id_blog', $id_blog);
+        $this->db->execute();
+    }
+
 
     // Fungsi untuk mendapatkan id_blog terakhir dari database
     private function getLastBlogId()

@@ -57,7 +57,7 @@
                <div id="blogList" class="mt-2 tampil-blogs grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-scroll h-80">
                     <?php foreach ($data['blogs'] as $isi) : ?>
                          <div class="p-6 rounded-lg shadow-md border tracking-normal">
-                              <a class="hover:text-blue-300" href="<?= BASEURL ?>/blog/detail_blog?id=<?= $isi['id_blog'] ?>">
+                              <a class="hover:text-blue-300" href="<?= BASEURL ?>/blog/detail_blog_admin?id=<?= $isi['id_blog'] ?>">
                                    <h2 class="text-3xl font-bold mb-4"><?= htmlspecialchars($isi["judul"], ENT_QUOTES, 'UTF-8') ?></h2>
                               </a>
                               <img class="w-24 mb-2" src="<?= BASEURL ?>/img/blog/<?= $isi['foto_blogs'] ?>" alt="">

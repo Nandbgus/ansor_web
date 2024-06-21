@@ -4,6 +4,80 @@
 
 <script src="https://cdn.jsdelivr.net/npm/print-js@1.6.0/dist/print.min.js"></script>
 <script>
+    // Fungsi untuk menambahkan kategori
+    function addCategory() {
+        var selectElement = document.getElementById('kategori');
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+
+        if (selectedOption && selectedOption.value) {
+            var selectedCategoriesDiv = document.getElementById('selectedCategories');
+
+            // Check if category is already selected
+            var existingCategory = selectedCategoriesDiv.querySelector('[data-id="' + selectedOption.value + '"]');
+            if (!existingCategory) {
+                var categoryDiv = document.createElement('div');
+                categoryDiv.classList.add('selected-category', 'bg-gray-200', 'rounded-md', 'px-2', 'py-1', 'inline-flex', 'items-center', 'space-x-2');
+                categoryDiv.setAttribute('data-id', selectedOption.value);
+
+                var categoryNameSpan = document.createElement('span');
+                categoryNameSpan.textContent = selectedOption.text;
+                categoryDiv.appendChild(categoryNameSpan);
+
+                var removeButton = document.createElement('button');
+                removeButton.setAttribute('type', 'button');
+                removeButton.classList.add('text-red-500', 'hover:text-red-700');
+                removeButton.textContent = 'X';
+                removeButton.addEventListener('click', function() {
+                    removeCategory(this);
+                });
+                categoryDiv.appendChild(removeButton);
+
+                var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'kategori[]');
+                hiddenInput.setAttribute('value', selectedOption.value);
+                categoryDiv.appendChild(hiddenInput);
+
+                selectedCategoriesDiv.appendChild(categoryDiv);
+            }
+        }
+    }
+
+
+    // Fungsi untuk menghapus kategori
+    function removeCategory(button) {
+        var categoryDiv = button.closest('.selected-category');
+        if (categoryDiv) {
+            categoryDiv.remove();
+        }
+    }
+
+
+    // Fungsi untuk membuka modal preview gambar
+    function openModal(src) {
+        var modal = document.getElementById('modalPreview');
+        var modalImage = document.getElementById('modalImage');
+        modalImage.src = src;
+        modal.classList.remove('hidden');
+    }
+
+    // Fungsi untuk menutup modal preview gambar
+    document.getElementById('closeModal').onclick = function() {
+        document.getElementById('modalPreview').classList.add('hidden');
+    };
+
+    // Fungsi untuk menutup modal jika area di luar gambar diklik
+    document.getElementById('modalPreview').onclick = function(event) {
+        if (event.target === this) {
+            this.classList.add('hidden');
+        }
+    };
+
+    // Tambahkan event listener untuk gambar saat ini
+    document.getElementById('currentFoto').onclick = function() {
+        openModal(this.src);
+    };
+
     function printElement() {
         printJS({
             printable: 'elementToPrint',
