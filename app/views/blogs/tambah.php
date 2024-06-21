@@ -1,7 +1,7 @@
 <h1 class="text-2xl font-bold">Halaman Blogs</h1>
 <br>
 <div id="contents" class="container mx-auto gap-4 flex flex-col md:flex-row" x-data="{ isMinimizedForm: false, isMinimizedBlogs: false }">
-     <div :class="isMinimizedForm ? 'w-full sm:w-1/12 mb-4 md:mb-0' : (isMinimizedBlogs ? 'w-full sm:w-full' : 'sm:w-8/12 w-full')" class="rounded-sm bg-white border border-solid border-gray-300 shadow-sm overflow-hidden transition-all duration-300">
+     <div :class="isMinimizedForm ? 'w-full sm:w-1/12 mb-4 md:mb-0' : (isMinimizedBlogs ? 'w-full sm:w-full' : 'sm:w-8/12 w-full')" class="rounded-md bg-white  shadow-sm overflow-hidden transition-all duration-300">
           <div class="flex justify-between items-center p-4">
                <h2 class="text-lg font-bold" x-show="!isMinimizedForm">Form Tambah Blog</h2>
                <button @click="isMinimizedForm = !isMinimizedForm" class=" focus:outline-none">
@@ -37,7 +37,9 @@
                </form>
           </div>
      </div>
-     <div :class="isMinimizedBlogs ? 'sm:w-1/12 w-full' : 'sm:w-full w-full'" class="rounded-sm bg-white border border-solid border-gray-300 shadow-sm overflow-hidden transition-all duration-300">
+
+
+     <div :class="isMinimizedBlogs ? 'sm:w-1/12 w-full' : 'sm:w-full w-full'" class="rounded-md bg-white  shadow-sm overflow-hidden transition-all duration-300">
 
           <div class="flex justify-between items-center p-4">
                <span x-show="!isMinimizedBlogs">Total Post : <?= $data['total'] ?></span>
@@ -52,7 +54,7 @@
                </button>
           </div>
 
-          <div x-show="!isMinimizedBlogs" class="p-4">
+          <div x-show="!isMinimizedBlogs" class="p-4 ">
                <input type="text" id="searchInput" placeholder="Ex : One Piece..." class="w-full border border-solid rounded-md px-4 py-2 bg-gray-100">
                <div id="blogList" class="mt-2 tampil-blogs grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-scroll h-80">
                     <?php foreach ($data['blogs'] as $isi) : ?>

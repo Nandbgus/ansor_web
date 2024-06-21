@@ -1,4 +1,4 @@
-<div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+<div class="mx-auto max-w-7xl py-6 ">
     <div class="overflow-x-auto">
         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
             <div class="min-w-full overflow-x-auto">

@@ -246,6 +246,11 @@
         return day + ' ' + monthNames[monthIndex] + ' ' + year;
     }
 
+    function viewMember(id_member) {
+        document.getElementById('id_member_input').value = id_member;
+        document.getElementById('memberForm').submit();
+    }
+
     // Ambil elemen input pencarian
     const searchInput = document.getElementById('searchInput');
 
