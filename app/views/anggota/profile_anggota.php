@@ -1,13 +1,17 @@
-<!-- Profile Member Via Admin -->
+<br>
+<div class="max-w-7xl mx-auto py-10 px-6 sm:px-8 lg:px-10 bg-white shadow-md rounded-lg">
 
-<div class="max-w-4xl mx-auto py-10 px-6 sm:px-8 lg:px-10 bg-white shadow-md rounded-lg">
-    <a class="p-1 px-2 bg-blue-500 shadow-md text-white border hover:bg-blue-700" href="<?= BASEURL ?>/admin/daftar_anggota">Back</a>
+    <!-- Back Button -->
+    <a class="p-1 px-2 lg:hidden bg-blue-500 shadow-md text-white border hover:bg-blue-700" href="<?= BASEURL ?>/admin/daftar_anggota">Back</a>
 
+    <!-- Title -->
     <div class="text-center border-b pb-6">
         <h1 class="text-4xl font-bold text-gray-800"><?= $data['head'] ?></h1>
     </div>
+
     <?php $member = $data['member']; ?>
 
+    <!-- Profile Section -->
     <div class="mt-8 space-y-4">
         <div class="biodata pt-8">
             <div class="flex justify-center">
@@ -24,36 +28,39 @@
                     <?php endif; ?>
                 </div>
             </div>
+
+            <!-- Data Diri -->
             <h2 class="text-2xl font-semibold text-gray-800">Data Diri</h2>
-            <div class="flex items-center">
-                <span class="w-48 font-bold  text-gray-700">Nama</span>
-                <span class="text-gray-900">: <?= htmlspecialchars($member['nama_a'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
-            </div>
-            <div class="flex items-center">
-                <span class="w-48 font-bold text-gray-700">No HP</span>
-                <span class="text-gray-900">: <?= htmlspecialchars($member['no_hp'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
-            </div>
-            <div class="flex items-center">
-                <span class="w-48 font-bold text-gray-700">Dusun</span>
-                <span class="text-gray-900">: <?= htmlspecialchars($member['nama_dusun'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
-            </div>
-            <div class="flex items-center">
-                <span class="w-48 font-bold text-gray-700">Desa</span>
-                <span class="text-gray-900">: <?= htmlspecialchars($member['nama_desa'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
-            </div>
-            <div class="flex items-center">
-                <span class="w-48 font-bold text-gray-700">RT</span>
-                <span class="text-gray-900">: <?= htmlspecialchars($member['rt'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
-            </div>
-            <div class="flex items-center">
-                <span class="w-48 font-bold text-gray-700">Status Keanggotaan</span>
-                <span class="text-gray-900">: <?= htmlspecialchars($member['nama_keanggotaan'] ?? 'Belum Terdaftar', ENT_QUOTES, 'UTF-8') ?></span>
+            <div class="grid grid-cols-2 gap-x-4 mt-4">
+                <div class="flex items-center">
+                    <span class="font-bold text-gray-700">Nama</span>
+                    <span class="ml-2 text-gray-900">: <?= htmlspecialchars($member['nama_a'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <div class="flex items-center">
+                    <span class="font-bold text-gray-700">No HP</span>
+                    <span class="ml-2 text-gray-900">: <?= htmlspecialchars($member['no_hp'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <div class="flex items-center">
+                    <span class="font-bold text-gray-700">Dusun</span>
+                    <span class="ml-2 text-gray-900">: <?= htmlspecialchars($member['nama_dusun'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <div class="flex items-center">
+                    <span class="font-bold text-gray-700">Desa</span>
+                    <span class="ml-2 text-gray-900">: <?= htmlspecialchars($member['nama_desa'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <div class="flex items-center">
+                    <span class="font-bold text-gray-700">RT</span>
+                    <span class="ml-2 text-gray-900">: <?= htmlspecialchars($member['rt'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <div class="flex items-center">
+                    <span class="font-bold text-gray-700">Status Keanggotaan</span>
+                    <span class="ml-2 text-gray-900">: <?= htmlspecialchars($member['nama_keanggotaan'] ?? 'Belum Terdaftar', ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
             </div>
         </div>
 
-
         <!-- Activities Section -->
-        <div class=" w-full bg-white shadow-md rounded-lg overflow-hidden my-10">
+        <div class="w-full bg-white shadow-md rounded-lg overflow-hidden my-10">
             <div class="p-4 bg-gray-200">
                 <h2 class="text-2xl font-semibold">Pengalaman Kegiatan</h2>
             </div>

@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="/ansor/public/css/output.css">
     <link href="/ansor/public/css/datatables.min.css" rel="stylesheet">
     <style>
-        table.dataTable,
-        table.dataTable th,
-        table.dataTable td {
-            border: 1px solid gray;
+        table.dataTable {
+            border-radius: 25%;
+            border: none;
         }
+
+        table.dataTable th,
 
         #content {
             background-color: white;
@@ -25,19 +26,18 @@
         }
 
         .ButtonTool {
-            padding: 8px;
+            padding: 6px;
             color: whitesmoke;
             font-weight: 500;
-            border-radius: 5%;
             background-color: rgb(31 41 55 / var(--tw-bg-opacity));
         }
 
         .ButtonTool:nth-child(1)::after {
-            content: " --";
+            content: " ";
         }
 
-        .ButtonTool:nth-child(2) {
-            background-color: green;
+        .ButtonTool:nth-child(2):hover {
+            background-color: #0080ff;
         }
 
         .ButtonTool:nth-child(3) {

@@ -1,5 +1,5 @@
 <!-- Profile Untuk Semua yang sudah login -->
-
+<br>
 <div id="elementToPrint" class=" printable mx-auto max-w-7xl p-6 bg-white shadow-xl rounded-lg text-gray-900">
     <div class="rounded-t-lg h-32 sm:h-60 overflow-hidden">
         <img class="object-cover object-top w-full" src='https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ' alt='Mountain'>
