@@ -22,10 +22,12 @@
                     <h2 class="text-xl md:text-2xl font-bold mb-4"><?= htmlspecialchars($blog['judul'], ENT_QUOTES, 'UTF-8') ?></h2>
                 </a>
                 <p class="text-gray-600 text-sm mb-4">Ditulis oleh <span class="font-semibold text-blue-700"><?= htmlspecialchars($blog['nama_a'], ENT_QUOTES, 'UTF-8') ?></span> | <span class="font-semibold"><?= htmlspecialchars($blog['time_stamp'], ENT_QUOTES, 'UTF-8') ?></span></p>
-                <div class="mb-4">
-                    <?php foreach ($blog['kategories'] as $kategori) : ?>
-                        <span data-categories="<?= htmlspecialchars($kategori['id_kategori'], ENT_QUOTES, 'UTF-8') ?>" class="kategori_f inline-block mr-2 mb-2 px-2 py-1 bg-blue-500 text-white rounded text-sm"><?= htmlspecialchars($kategori['nama_kategori'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endforeach; ?>
+                <div class="foto relative" style="background-image: url('<?= BASEURL ?>/img/blog/<?= $blog['foto_blogs'] ?>'); background-size: cover; background-position: center; width: 100%; height: 400px;">
+                    <div class="absolute bottom-0 mb-4">
+                        <?php foreach ($blog['kategories'] as $category) : ?>
+                            <span class="mr-2 mb-2 px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm"># <?= htmlspecialchars($category['nama_kategori'], ENT_QUOTES, 'UTF-8') ?></span>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
                 <p class="text-gray-700 truncate line-clamp-2"><?= htmlspecialchars($blog['body'], ENT_QUOTES, 'UTF-8') ?></p>
             </div>

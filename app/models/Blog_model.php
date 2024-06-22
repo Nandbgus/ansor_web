@@ -299,4 +299,19 @@ class Blog_model
 
         return $blog;
     }
+
+
+    // Menggunakan Call Stored Prosedur Untuk Memanggil Data Blog Terbaru
+    public function getLatestBlogs()
+    {
+        $this->db->query("CALL GetLatestBlogs()");
+        return $this->db->resultSet();
+    }
+    // Menggunakan Select Function Prosedur Untuk Memanggil Author dengan Blog Terbanyak
+    public function getAuthorMostBlogs()
+    {
+        $this->db->query("SELECT GetAuthorWithMostBlogs() AS AuthorBio ");
+        $result = $this->db->single();
+        return $result['AuthorBio'];
+    }
 }

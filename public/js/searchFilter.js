@@ -42,16 +42,21 @@ document.addEventListener('DOMContentLoaded', function () {
         div.setAttribute('data-title', blog.judul);
         div.setAttribute('data-categories', JSON.stringify(blog.kategories));
 
-        div.innerHTML = `
-            <a href="/ansor/public/blog/detail_blog?id=${blog.id_blog}" class="hover:underline">
-                    <h2 class="text-xl md:text-2xl font-bold mb-4">${blog.judul}</h2>
-                </a>
-            <p class="text-gray-600 text-sm mb-4">Ditulis oleh <span class="font-semibold text-blue-700">${blog.nama_a}</span> | <span class="font-semibold">${blog.time_stamp}</span></p>
-            <div class="mb-4">
-                ${blog.kategories.map(kategori => `<span class="kategori_f inline-block mr-2 mb-2 px-2 py-1 bg-blue-500 text-white rounded text-sm">${kategori.nama_kategori}</span>`).join('')}
-            </div>
-            <p class="text-gray-700 truncate line-clamp-2">${blog.body}</p>
-        `;
+       div.innerHTML = `
+    <a href="/ansor/public/blog/detail_blog?id=${blog.id_blog}" class="hover:underline">
+        <h2 class="text-xl md:text-2xl font-bold mb-4">${blog.judul}</h2>
+    </a>
+    <p class="text-gray-600 text-sm mb-4">Ditulis oleh <span class="font-semibold text-blue-700">${blog.nama_a}</span> | <span class="font-semibold">${blog.time_stamp}</span></p>
+    <div class="foto relative" style="background-image: url('/ansor/public/img/blog/${blog.foto_blogs}'); background-size: cover; background-position: center; width: 100%; height: 200px;">
+        <div class="absolute bottom-0 right-0 mb-4">
+            ${blog.kategories.map(kategori => `
+                <span class="mr-2 mb-2 px-2 py-1 bg-blue-500 text-white rounded text-sm"># ${kategori.nama_kategori}</span>
+            `).join('')}
+        </div>
+    </div>
+    <p class="text-gray-700 truncate line-clamp-2">${blog.body}</p>
+`;
+
 
         return div;
     }

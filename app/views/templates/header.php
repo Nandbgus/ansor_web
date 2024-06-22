@@ -11,6 +11,34 @@
             <!-- <script src="/ansor/public/js/alphine.js" defer></script> -->
             <script src="/ansor/public/js/searchFilter.js" defer></script>
             <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
+            <style>
+                .artikel-judul::before {
+                    content: "";
+                    position: absolute;
+                    margin-top: 20px;
+                    left: 0;
+                    z-index: -1;
+                    width: 40%;
+                    height: 4px;
+                    /* Ketebalan garis */
+                    background-color: #EF4444;
+                    /* Warna garis */
+                }
+
+                .artikel-judul::after {
+                    content: "";
+                    position: absolute;
+                    margin-top: 20px;
+                    right: 0;
+                    z-index: -1;
+                    width: 40%;
+                    height: 4px;
+                    /* Ketebalan garis */
+                    background-color: #EF4444;
+                    /* Warna garis */
+                }
+            </style>
         </head>
 
         <body class="h-full bg-gray-100">

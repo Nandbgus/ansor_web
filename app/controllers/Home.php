@@ -12,8 +12,12 @@ class Home extends Controller
             // Misalnya, atur $data['foto'] ke nilai default atau kosong
             $data['foto'] = ''; // Atur ke nilai default atau kosong
         }
+        $data['blogs'] = $this->model('Blog_model')->getLatestBlogs();
+        $data['author'] = $this->model('Blog_model')->getAuthorMostBlogs();
+
+
         $this->view('templates/header', $data);
-        $this->view('home/index');
+        $this->view('home/index', $data);
         $this->view('templates/footer');
     }
 }
