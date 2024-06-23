@@ -4,7 +4,7 @@
 // define('BASEURL', 'http://localhost:80/ansor/public');
 
 //Production
-define('BASEURL', 'https://equipped-man-likely.ngrok-free.app//ansor/public');
+define('BASEURL', 'https://equipped-man-likely.ngrok-free.app/ansor/public');
 
 
 //DB

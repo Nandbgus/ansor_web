@@ -19,33 +19,36 @@ class Auth extends Controller
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Mulai session
+            session_start();
             // Ambil data dari form login
-            $id = $_POST['id'];
+            $username = $_POST['username'];
             $password = $_POST['password'];
 
             // Panggil model User_model
             $user = $this->model('User_model');
-            $user->id = $id;
+            $user->username = $username;
             $user->password = $password;
             try {
                 if ($user->login()) {
-                    // Mulai session
-                    session_start();
 
-                    // Set session user_id dan is_admin
+                    // Simpan informasi dasar ke session
                     $_SESSION['user_id'] = $user->id;
+                    $_SESSION['username'] = $user->username;
                     $_SESSION['is_admin'] = $user->is_admin;
 
-                    // Simpan informasi pengguna tambahan seperti nama dan foto profil ke dalam session
-                    $_SESSION['user_name'] = $user->nama_a;
-                    $_SESSION['no_hp'] = $user->no_hp;
-                    $_SESSION['status'] = $user->nama_status;
-                    $_SESSION['desa'] = $user->nama_desa;
-                    $_SESSION['dusun'] = $user->nama_dusun;
-                    $_SESSION['rt'] = $user->rt;
-                    $_SESSION['nama_kegiatan'] = $user->nama_kegiatan;
-                    $_SESSION['user_profile_picture'] = $user->foto;
-                    $_SESSION['is_admin'] = $user->is_admin;
+                    // Ambil informasi tambahan dari tabel members menggunakan id
+                    if ($user->getBio($user->id)) {
+                        // Simpan informasi tambahan ke session
+                        $_SESSION['user_name'] = $user->nama_a;
+                        $_SESSION['no_hp'] = $user->no_hp;
+                        $_SESSION['status'] = $user->nama_status;
+                        $_SESSION['desa'] = $user->nama_desa;
+                        $_SESSION['dusun'] = $user->nama_dusun;
+                        $_SESSION['rt'] = $user->rt;
+                        $_SESSION['nama_kegiatan'] = $user->nama_kegiatan;
+                        $_SESSION['user_profile_picture'] = $user->foto;
+                    }
 
                     // Redirect ke halaman yang sesuai
                     if ($user->is_admin) {
@@ -114,6 +117,7 @@ class Auth extends Controller
             // Jika pengguna adalah admin, arahkan ke tampilan admin
             $data['head'] = "Admin Profile";
             $data['kegiatan'] = $userModel->semua_kegiatan();
+            $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
             $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
             $data['kg'] = $this->model('Anggota_model')->getKegiatanByMember($_SESSION['user_id']);
             $data['current_page'] = 'profile_admin';
@@ -126,6 +130,7 @@ class Auth extends Controller
             // Jika pengguna bukan admin, arahkan ke tampilan pengguna biasa
             $data['head'] = "User Profile";
             $data['current_page'] = "Profile_anggota";
+            $data['kegiatan'] = $userModel->semua_kegiatan();
             $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
             $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
             $data['kg'] = $this->model('Anggota_model')->getKegiatanByMember($_SESSION['user_id']);
@@ -175,8 +180,37 @@ class Auth extends Controller
         }
     }
 
-    public function profileUpdate(){
-        
+    public function profileUpdate()
+    {
+        //Untuk Update Biodata Username dan Password
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = $_SESSION['user_id'];
+            $newUsername = $_POST['username'];
+            $newPassword = $_POST['password'];
+
+            // Load the User model
+            $userModel = $this->model('User_model');
+            $result = $userModel->updateProfile($userId, $newUsername, $newPassword);
+
+            if ($result) {
+                // Update session username
+                $_SESSION['username'] = $newUsername;
+
+                // Redirect to profile page with success message
+                header("Location: " . BASEURL . "/auth/setting?update=success");
+                exit();
+            } else {
+                // Redirect to profile page with error message
+                header("Location: " . BASEURL . "/auth/setting?update=failed");
+                exit();
+            }
+        } else {
+            // Load the profile update form
+            $data['head'] = "Update Profile";
+            $this->view('templates/header', $data);
+            $this->view('auth/profile_update', $data);
+            $this->view('templates/footer');
+        }
     }
     public function logout()
     {

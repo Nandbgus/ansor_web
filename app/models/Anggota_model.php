@@ -45,7 +45,6 @@ class Anggota_model extends Controller
             $userData = [
                 'id' => $data['id'],
                 'password' => password_hash($data['id'], PASSWORD_DEFAULT), // Hash password
-                'email' => '', // Contoh email
                 'is_admin' => 0 // Set default user as non-admin
             ];
             return $this->userModel->tambah_user($userData);

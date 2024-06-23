@@ -44,10 +44,11 @@ class Anggota extends Controller
 
             // Tangani unggahan foto
             $userId = $_SESSION['user_id'];
+            $username = $_SESSION['username'];
             $photoFile = $_FILES['foto'];
 
             // Panggil model User untuk menyimpan foto
-            $result = $this->model('User_model')->saveProfilePhoto($userId, $photoFile);
+            $result = $this->model('User_model')->saveProfilePhoto($userId, $username, $photoFile);
 
             // Redirect ke halaman profil setelah selesai
             if ($result) {

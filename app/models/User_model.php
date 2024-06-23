@@ -6,6 +6,7 @@ class User_model extends Controller
     private $table = 'users';
 
     public $id;
+    public $username;
     public $password;
     public $is_admin;
 
@@ -53,44 +54,16 @@ class User_model extends Controller
 
     public function login()
     {
-        $this->db->query("
-            SELECT 
-                users.id, users.password, users.is_admin,
-                members.nama_a, members.no_hp, members.id_dusun, members.id_status, members.foto, members.rt,
-                dusun.nama dsn, dusun.id_desa,
-                desa.nama dsa,
-                status_keanggotaan.nama_keanggotaan,
-                laporan_kegiatan.*, kegiatan.nama nama_kegiatan
-            FROM " . $this->table . "
-            JOIN members ON users.id = members.id
-            LEFT JOIN dusun ON members.id_dusun = dusun.id_dusun
-            LEFT JOIN desa ON dusun.id_desa = desa.id
-            LEFT JOIN status_keanggotaan ON members.id_status = status_keanggotaan.id
-            LEFT JOIN laporan_kegiatan ON members.id = laporan_kegiatan.id_anggota
-            LEFT JOIN kegiatan ON laporan_kegiatan.id_kegiatan = kegiatan.id_kegiatan 
-            WHERE users.id = :id
-        ");
-        $this->db->bind(':id', $this->id);
+        $this->db->query("SELECT * FROM " . $this->table . " WHERE username = :username");
+        $this->db->bind(':username', $this->username);
 
         $row = $this->db->single();
 
         if ($row && password_verify($this->password,  $row['password'])) {
             // Set user properties
             $this->id = $row['id'];
+            $this->username = $row['username'];
             $this->is_admin = $row['is_admin'];
-
-            // Set additional properties from joined tables
-            $this->nama_a = $row['nama_a'];
-            $this->no_hp = $row['no_hp'];
-            $this->id_dusun = $row['id_dusun'];
-            $this->foto = $row['foto'];
-            $this->rt = $row['rt'];
-            $this->nama_dusun = $row['dsn'];
-            $this->nama_desa = $row['dsa'];
-            $this->nama_kegiatan = $row['nama_kegiatan'];
-            $this->nama_status = $row['nama_keanggotaan'];
-
-
             // Return true if login is successful
             return true;
         } else {
@@ -98,6 +71,50 @@ class User_model extends Controller
             return false;
         }
     }
+
+    public function getBio($id)
+    {
+        $this->db->query("
+        SELECT 
+            users.id, users.username, users.password, users.is_admin,
+            members.nama_a, members.no_hp, members.id_dusun, members.id_status, members.foto, members.rt,
+            dusun.nama AS nama_dusun, dusun.id_desa,
+            desa.nama AS nama_desa,
+            status_keanggotaan.nama_keanggotaan,
+            kegiatan.nama AS nama_kegiatan
+        FROM " . $this->table . "
+        JOIN members ON users.id = members.id
+        LEFT JOIN dusun ON members.id_dusun = dusun.id_dusun
+        LEFT JOIN desa ON dusun.id_desa = desa.id
+        LEFT JOIN status_keanggotaan ON members.id_status = status_keanggotaan.id
+        LEFT JOIN laporan_kegiatan ON members.id = laporan_kegiatan.id_anggota
+        LEFT JOIN kegiatan ON laporan_kegiatan.id_kegiatan = kegiatan.id_kegiatan 
+        WHERE users.id = :id
+    ");
+        $this->db->bind(':id', $id);
+
+        $row = $this->db->single();
+
+        if ($row) {
+            // Set additional properties from joined tables
+            $this->nama_a = $row['nama_a'];
+            $this->no_hp = $row['no_hp'];
+            $this->id_dusun = $row['id_dusun'];
+            $this->foto = $row['foto'];
+            $this->rt = $row['rt'];
+            $this->nama_dusun = $row['nama_dusun'];
+            $this->nama_desa = $row['nama_desa'];
+            $this->nama_kegiatan = $row['nama_kegiatan'];
+            $this->nama_status = $row['nama_keanggotaan'];
+
+            // Return true if data retrieval is successful
+            return true;
+        } else {
+            // Return false if data retrieval fails
+            return false;
+        }
+    }
+
 
     public function semua_kegiatan()
     {
@@ -124,7 +141,7 @@ class User_model extends Controller
     }
 
     // Model
-    public function saveProfilePhoto($userId, $photoFile)
+    public function saveProfilePhoto($userId, $username, $photoFile)
     {
         // Tentukan batas ukuran file gambar (dalam byte)
         $maxFileSize = 2 * 1024 * 1024; // Contoh: batas ukuran 2MB
@@ -139,10 +156,11 @@ class User_model extends Controller
         // Periksa apakah foto sudah diunggah dengan benar
         if ($photoFile['error'] === UPLOAD_ERR_OK) {
             // Tentukan nama file baru
-            $photoFileName = uniqid() . '_' . $photoFile['name'];
+            $last_string = substr($userId, -2);
+            $photoFileName = $username . $last_string;
 
             // Batasi panjang nama file jika lebih dari 100 karakter
-            if (strlen($photoFileName) > 5) {
+            if (strlen($photoFileName) > 8) {
                 $photoFileName = substr($photoFileName, 0, 5);
             }
 
@@ -176,17 +194,34 @@ class User_model extends Controller
     public function tambah_user($data)
     {
         $this->db->query('
-            INSERT INTO ' . $this->table . ' (id, password, email, is_admin)
-            VALUES (:id, :password, :email, :is_admin)
+            INSERT INTO ' . $this->table . ' (id, username, password,  is_admin)
+            VALUES (:id,:username, :password,  :is_admin)
         ');
 
         // Bind data
         $this->db->bind(':id', $data['id']);
+        $this->db->bind(':username', $data['id']);
         $this->db->bind(':password', $data['password']);
-        $this->db->bind(':email', $data['email']);
         $this->db->bind(':is_admin', $data['is_admin']);
 
         // Execute
         return $this->db->execute();
+    }
+
+    public function updateProfile($userId, $newUsername, $newPassword)
+    {
+        // Prepare SQL query to update username and password
+        $sql = "UPDATE " . $this->table . " SET username = :username, password = :password WHERE id = :id";
+        $this->db->query($sql);
+        $this->db->bind(':username', $newUsername);
+        $this->db->bind(':password', password_hash($newPassword, PASSWORD_DEFAULT));
+        $this->db->bind(':id', $userId);
+
+        // Execute the query
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
