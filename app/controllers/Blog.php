@@ -5,7 +5,7 @@ class Blog extends Controller
 
     public function index()
     {
-        $data['head'] = "Blog";
+        $data['head'] = "Berita";
         $data['current_page'] = "Blog";
 
         // Pagination setup

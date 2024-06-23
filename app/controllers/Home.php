@@ -3,7 +3,7 @@ class Home extends Controller
 {
     public function index()
     {
-        $data['head'] = "Home Page";
+        $data['head'] = "Beranda";
         $data['current_page'] = "Home";
         if (isset($_SESSION['user_id'])) {
             $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);

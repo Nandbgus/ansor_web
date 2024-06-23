@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function createBlogItem(blog) {
         const div = document.createElement('div');
-        div.className = 'konten p-6 rounded-lg shadow-md border tracking-normal bg-white blog-item';
+        div.className = 'konten p-6 rounded-lg shadow-sm bg-white blog-item';
         div.setAttribute('data-title', blog.judul);
         div.setAttribute('data-categories', JSON.stringify(blog.kategories));
 
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchAllBlogs() {
         const fetchPromises = [];
         for (let page = 1; page <= totalPages; page++) {
-            const url = `http://localhost:8080/ansor/public/blog/index?page=${page}`;
+            const url = `${BASEURL}/blog/index?page=${page}`;
 
             fetchPromises.push(
                 fetch(url, {

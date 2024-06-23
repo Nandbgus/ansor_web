@@ -2,13 +2,13 @@
     <!-- Bagian Pencarian dan Filter -->
     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-2">
         <div class="mb-4 md:mb-0 w-full">
-            <input id="searchInput" type="text" placeholder="Cari..." class="w-full bg-white px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <input id="searchInput" type="text" placeholder="Cari..." class="w-full bg-white px-4 py-2 shadow-sm rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
         <div class="flex items-center space-x-2 gap-2">
-            <select id="categoryFilter" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <select id="categoryFilter" class="px-4 py-2 shadow-sm rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 <option value="">Semua Kategori</option>
                 <?php foreach ($data['kategories'] as $category) : ?>
-                    <option value="<?= htmlspecialchars($category['kategori'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($category['kategori'], ENT_QUOTES, 'UTF-8') ?></option>
+                    <option class="" value="<?= htmlspecialchars($category['kategori'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($category['kategori'], ENT_QUOTES, 'UTF-8') ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -17,7 +17,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="contentGrid">
         <!-- PHP Loop to display blogs -->
         <?php foreach ($data['isi'] as $blog) : ?>
-            <div class="konten p-6 rounded-lg shadow-md border tracking-normal bg-white blog-item" data-title="<?= htmlspecialchars($blog['judul'], ENT_QUOTES, 'UTF-8') ?>" data-categories="<?= htmlspecialchars(json_encode(array_column($blog['kategories'], 'id_kategori')), ENT_QUOTES, 'UTF-8') ?>">
+            <div class="konten p-6 rounded-md shadow-sm tracking-normal bg-white blog-item" data-title="<?= htmlspecialchars($blog['judul'], ENT_QUOTES, 'UTF-8') ?>" data-categories="<?= htmlspecialchars(json_encode(array_column($blog['kategories'], 'id_kategori')), ENT_QUOTES, 'UTF-8') ?>">
                 <a href="<?= BASEURL ?>/blog/detail_blog?id=<?= $blog['id_blog'] ?>">
                     <h2 class="text-xl md:text-2xl font-bold mb-4"><?= htmlspecialchars($blog['judul'], ENT_QUOTES, 'UTF-8') ?></h2>
                 </a>

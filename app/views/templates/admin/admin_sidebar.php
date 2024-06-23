@@ -159,7 +159,19 @@
                     <a href="<?= BASEURL; ?>/admin/daftar_anggota" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'daftar_anggota') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Daftar Anggota</a>
                     <a href="<?= BASEURL; ?>/admin/reports" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'reports') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Laporan Kegiatan</a>
                     <hr>
-                    <a href="<?= BASEURL; ?>/auth/profile" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'profile_admin') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Profile</a>
+                    <div x-data="{ open: false }" class="relative mt-2">
+                        <button @click="open = !open" class="flex justify-between items-center w-full text-left text-md hover:bg-gray-600 p-2 text-gray-400 hover:text-white <?= ($data['current_page'] == 'tambah_members' || $data['current_page'] == 'tambah_blogs') ? 'text-white bg-gray-600' : '' ?>">
+                            Profile
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-2" x-cloak class="origin-top-left mt-2 w-full rounded-md  bg-gray-800">
+                            <a href="<?= BASEURL; ?>/auth/profile" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'profile_admin') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Your Profile</a>
+                            <a href="<?= BASEURL; ?>/auth/setting" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'setting_admin') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Setting</a>
+                            <a href="<?= BASEURL; ?>/auth/logout" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'logout_admin') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Logout</a>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </div>

@@ -7,9 +7,12 @@
             <title><?= $data['head'] ?></title>
             <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.min.js"></script>
             <link rel="stylesheet" href="/ansor/public/css/output.css">
+            <script>
+                const BASEURL = '<?= BASEURL ?>';
+            </script>
             <!-- Masukkan Alpine.js -->
             <!-- <script src="/ansor/public/js/alphine.js" defer></script> -->
-            <script src="/ansor/public/js/searchFilter.js" defer></script>
+            <script src="<?= BASEURL ?>/js/searchFilter.js"></script>
             <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 
             <style>
@@ -19,23 +22,10 @@
                     margin-top: 20px;
                     left: 0;
                     z-index: -1;
-                    width: 40%;
+                    width: 100%;
                     height: 4px;
                     /* Ketebalan garis */
-                    background-color: #EF4444;
-                    /* Warna garis */
-                }
-
-                .artikel-judul::after {
-                    content: "";
-                    position: absolute;
-                    margin-top: 20px;
-                    right: 0;
-                    z-index: -1;
-                    width: 40%;
-                    height: 4px;
-                    /* Ketebalan garis */
-                    background-color: #EF4444;
+                    background-color: #0080ff;
                     /* Warna garis */
                 }
             </style>
@@ -72,8 +62,8 @@
                                         <?php
                                         $current_page = basename($_SERVER['REQUEST_URI'], ".php");
                                         ?>
-                                        <a href="<?= BASEURL; ?>/" class="<?= ($data['current_page'] == 'Home' || $data['current_page'] == 'index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
-                                        <a href="<?= BASEURL; ?>/blog" class="<?= ($data['current_page'] == 'Blog' || $data['current_page'] == 'blog') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Blog</a>
+                                        <a href="<?= BASEURL; ?>/" class="<?= ($data['current_page'] == 'Home' || $data['current_page'] == 'index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Beranda</a>
+                                        <a href="<?= BASEURL; ?>/blog" class="<?= ($data['current_page'] == 'Blog' || $data['current_page'] == 'blog') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Berita</a>
                                         <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) : ?>
                                             <a href="<?= BASEURL; ?>/admin/dashboard" class="<?= ($data['current_page'] == 'dashboard') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium">Dashboard (Admin)</a>
                                         <?php endif; ?>
@@ -137,8 +127,8 @@
                     <div x-show="mobileMenuOpen" class="sm:hidden" id="mobile-menu">
                         <div class="space-y-1 px-2 pb-3 pt-2">
                             <!-- Menu Items -->
-                            <a href="<?= BASEURL; ?>/" class="<?= ($data['current_page'] == 'Home' || $data['current_page'] == 'index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Home</a>
-                            <a href="<?= BASEURL; ?>/blog" class="<?= ($data['current_page'] == 'Blog' || $data['current_page'] == 'blog') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Blog</a>
+                            <a href="<?= BASEURL; ?>/" class="<?= ($data['current_page'] == 'Home' || $data['current_page'] == 'index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Beranda</a>
+                            <a href="<?= BASEURL; ?>/blog" class="<?= ($data['current_page'] == 'Blog' || $data['current_page'] == 'blog') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Berita</a>
                             <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) : ?>
                                 <a href="<?= BASEURL; ?>/admin/dashboard" class="<?= ($data['current_page'] == 'dashboard') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' ?> block rounded-md px-3 py-2 text-base font-medium">Dashboard (Admin)</a>
                             <?php endif; ?>
