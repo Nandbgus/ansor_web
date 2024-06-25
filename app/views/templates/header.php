@@ -32,6 +32,29 @@
         </head>
 
         <body class="h-full bg-gray-100">
+            <?php if (isset($_SESSION['message'])) : ?>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "<?= $_SESSION['message_type'] ?>",
+                            title: "<?= $_SESSION['message_type'] == 'success' ? 'Berhasil' : 'Gagal' ?>",
+                            text: "<?= $_SESSION['message'] ?>",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            toast: true,
+                            customClass: {
+                                popup: "<?= $_SESSION['message_type'] == 'success' ? 'success-toast' : 'error-toast' ?>"
+                            }
+                        });
+                    });
+                </script>
+                <?php
+                // Unset the message after displaying it
+                unset($_SESSION['message']);
+                unset($_SESSION['message_type']);
+                ?>
+            <?php endif; ?>
             <div class="min-h-full" x-data="{open:false}">
                 <div x-data="{ mobileMenuOpen: false, userMenuOpen: false }" class="bg-gray-800">
                     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

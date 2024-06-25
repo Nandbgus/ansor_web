@@ -9,6 +9,10 @@
     <link href="/ansor/public/css/datatables.min.css" rel="stylesheet">
     <script src="/ansor/public/js/alphine.js" defer></script>
     <script src="https://unpkg.com/@alpinejs/ui@3.x.x/dist/cdn.min.js"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="/ansor/public/js/datatables.min.js"></script>
 
@@ -54,6 +58,18 @@
                 border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
                 border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
             }
+
+            .success-toast {
+                background-color: #38a169 !important;
+                /* TailwindCSS green-600 */
+                color: white;
+            }
+
+            .error-toast {
+                background-color: #e53e3e !important;
+                /* TailwindCSS red-600 */
+                color: white;
+            }
         }
     </style>
 </head>
@@ -61,3 +77,26 @@
 <body class="h-full" x-data="{ darkMode: false, sidebarOpen: false, toggleDarkMode() { this.darkMode = !this.darkMode } }" :class="{ 'dark': darkMode }">
 
     <div class="flex h-full w-full ">
+        <?php if (isset($_SESSION['message'])) : ?>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "<?= $_SESSION['message_type'] ?>",
+                        title: "<?= $_SESSION['message_type'] == 'success' ? 'Berhasil' : 'Gagal' ?>",
+                        text: "<?= $_SESSION['message'] ?>",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        toast: true,
+                        customClass: {
+                            popup: "<?= $_SESSION['message_type'] == 'success' ? 'success-toast' : 'error-toast' ?>"
+                        }
+                    });
+                });
+            </script>
+            <?php
+            // Unset the message after displaying it
+            unset($_SESSION['message']);
+            unset($_SESSION['message_type']);
+            ?>
+        <?php endif; ?>

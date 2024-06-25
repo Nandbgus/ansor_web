@@ -19,9 +19,9 @@ class Profile extends Controller
             $idMember = $_POST['id_member'];
             $data['head'] = 'Detail Anggota';
             $data['current_page'] = 'Profile Member Admin';
+            $data['member'] = $this->model('Anggota_model')->getAnggotaById($idMember);
             $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
             $data['kegiatan'] = $this->model('Anggota_model')->getKegiatanByMember($idMember);
-            $data['member'] = $this->model('Anggota_model')->getAnggotaById($idMember);
             $data['kg'] = $this->model('Anggota_model')->getKegiatanByMember($idMember);
             $this->view('templates/admin/admin_sidebar', $data);
             $this->view('anggota/profile_anggota', $data);

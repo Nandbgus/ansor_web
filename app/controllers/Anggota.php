@@ -13,6 +13,8 @@ class Anggota extends Controller
         $data['current_page'] = "Dashboard";
         $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
         $data['diri'] = $this->model('Anggota_model')->getAnggotaById($_SESSION['user_id']);
+        $data['status'] = $this->model('Approve_model')->getRequestRolewithID($_SESSION['user_id']);
+        $data['sertif'] = $this->model('Anggota_model')->getKegiatanByMember($_SESSION['user_id']);
         $this->view('templates/anggota/anggota_header', $data);
         $this->view('templates/anggota/nav_dash', $data);
         $this->view('anggota/dashboard', $data);

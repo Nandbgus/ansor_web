@@ -20,8 +20,8 @@
     </form>
 
     <?php if (isset($_GET['update']) && $_GET['update'] == 'success') : ?>
-        <p class="alert alert-success">Profile updated successfully!</p>
+        <p class="alert bg-green-500 text-white p-4">Profile updated successfully!</p>
     <?php elseif (isset($_GET['update']) && $_GET['update'] == 'failed') : ?>
-        <p class="alert alert-danger">Failed to update profile. Please try again.</p>
+        <p class="alert bg-red-500 text-white p-4">Failed to update profile. Please try again.</p>
     <?php endif; ?>
 </div>

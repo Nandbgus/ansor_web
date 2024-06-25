@@ -77,18 +77,20 @@ class User_model extends Controller
         $this->db->query("
         SELECT 
             users.id, users.username, users.password, users.is_admin,
-            members.nama_a, members.no_hp, members.id_dusun, members.id_status, members.foto, members.rt,
+            members.nama_a, members.no_hp, members.id_dusun, members.foto, members.rt,
             dusun.nama AS nama_dusun, dusun.id_desa,
             desa.nama AS nama_desa,
+            kegiatan.nama AS nama_kegiatan,
             status_keanggotaan.nama_keanggotaan,
-            kegiatan.nama AS nama_kegiatan
-        FROM " . $this->table . "
+            role_approve.status_verif
+        FROM users
         JOIN members ON users.id = members.id
         LEFT JOIN dusun ON members.id_dusun = dusun.id_dusun
         LEFT JOIN desa ON dusun.id_desa = desa.id
-        LEFT JOIN status_keanggotaan ON members.id_status = status_keanggotaan.id
         LEFT JOIN laporan_kegiatan ON members.id = laporan_kegiatan.id_anggota
         LEFT JOIN kegiatan ON laporan_kegiatan.id_kegiatan = kegiatan.id_kegiatan 
+        LEFT JOIN role_approve ON members.id = role_approve.id_member
+        LEFT JOIN status_keanggotaan ON role_approve.role = status_keanggotaan.id
         WHERE users.id = :id
     ");
         $this->db->bind(':id', $id);
@@ -105,7 +107,14 @@ class User_model extends Controller
             $this->nama_dusun = $row['nama_dusun'];
             $this->nama_desa = $row['nama_desa'];
             $this->nama_kegiatan = $row['nama_kegiatan'];
-            $this->nama_status = $row['nama_keanggotaan'];
+
+            if ($row['status_verif'] === 'rejected') {
+                $this->nama_status = null;
+            } elseif ($row['status_verif'] === 'pending') {
+                $this->nama_status = $row['nama_keanggotaan'] . '(pending)';
+            } else {
+                $this->nama_status = $row['nama_keanggotaan'];
+            }
 
             // Return true if data retrieval is successful
             return true;

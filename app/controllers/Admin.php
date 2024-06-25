@@ -11,7 +11,9 @@ class Admin extends Controller
         // Lakukan pengecekan session di sini
         // Jika pengguna belum login atau bukan admin, maka redirect ke halaman login
         if (!isset($_SESSION['user_id']) || !$_SESSION['is_admin']) {
-            echo "<script>alert('Kamu Belum Login !!'); window.location='" . BASEURL . "/auth/login'</script>";
+            $_SESSION['message'] = 'Kamu Bukan admin';
+            $_SESSION['message_type'] = 'error';
+            header('Location: ' . BASEURL . '/auth/login');
             exit(); // Pastikan untuk keluar setelah melakukan redirect
         }
     }
@@ -87,10 +89,11 @@ class Admin extends Controller
             ];
 
             if ($this->model('Anggota_model')->tambah_anggota($data)) {
-                echo "<script>alert('Anggota berhasil ditambahkan'); window.location='" . BASEURL . "/admin/report'</script>";
+                header('Location: ' . BASEURL . '/admin/daftar_anggota');
             } else {
-                echo "<script>alert('Gagal menambahkan anggota'); window.location='" . BASEURL . "/admin/tambah_members'</script>";
+                header('Location: ' . BASEURL . '/admin/form_members');
             }
+            exit();
         }
     }
 }

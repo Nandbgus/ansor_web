@@ -109,11 +109,25 @@
             background-color: #00509f;
             padding: 8px;
         }
+
+        .success-toast {
+            /* TailwindCSS green-600 */
+            color: green;
+        }
+
+        .error-toast {
+            /* TailwindCSS red-600 */
+            color: red;
+        }
     </style>
 
     <!-- alpine Js -->
     <script src="/ansor/public/js/alphine.js" defer></script>
     <script src="https://unpkg.com/@alpinejs/ui@3.x.x/dist/cdn.min.js"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <!-- Data Tables -->
     <script src="/ansor/public/js/datatables.min.js"></script>
@@ -280,6 +294,29 @@
             </nav>
             <!-- content -->
             <div class="flex-grow p-8 isi">
+                <?php if (isset($_SESSION['message'])) : ?>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "<?= $_SESSION['message_type'] ?>",
+                                title: "<?= $_SESSION['message_type'] == 'success' ? 'Berhasil' : 'Gagal' ?>",
+                                text: "<?= $_SESSION['message'] ?>",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                toast: true,
+                                customClass: {
+                                    popup: "<?= $_SESSION['message_type'] == 'success' ? 'success-toast' : 'error-toast' ?>"
+                                }
+                            });
+                        });
+                    </script>
+                    <?php
+                    // Unset the message after displaying it
+                    unset($_SESSION['message']);
+                    unset($_SESSION['message_type']);
+                    ?>
+                <?php endif; ?>
                 <!-- Breadcrumbs -->
                 <nav class="flex" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">

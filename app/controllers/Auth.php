@@ -196,12 +196,16 @@ class Auth extends Controller
                 // Update session username
                 $_SESSION['username'] = $newUsername;
 
+                $_SESSION['message'] = 'Username dan Password Berhasil Dirubah';
+                $_SESSION['message_type'] = 'success';
                 // Redirect to profile page with success message
-                header("Location: " . BASEURL . "/auth/setting?update=success");
+                header("Location: " . BASEURL . "/auth/setting");
                 exit();
             } else {
+                $_SESSION['message'] = 'Username dan Password Gagal Dirubah';
+                $_SESSION['message_type'] = 'error';
                 // Redirect to profile page with error message
-                header("Location: " . BASEURL . "/auth/setting?update=failed");
+                header("Location: " . BASEURL . "/auth/setting");
                 exit();
             }
         } else {

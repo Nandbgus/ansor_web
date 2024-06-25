@@ -178,103 +178,150 @@ class Blog_model
         $id_blog = "b" . ($this->getLastBlogId() + 1);
 
         // Memasukkan data blog ke dalam tabel blog
-        $this->db->query("INSERT INTO $this->table (id_blog, judul, body, foto_blogs, id_author) VALUES (?, ?, ?, ?, ?)");
-        $this->db->bind(1, $id_blog);
-        $this->db->bind(2, $judul);
-        $this->db->bind(3, $body);
-        $this->db->bind(4, $foto);
-        $this->db->bind(5, $author);
+        $this->db->query("INSERT INTO blogs (id_blog, judul, body, foto_blogs, id_author) VALUES (:id_blog, :judul, :body, :foto_blogs, :id_author)");
+        $this->db->bind(':id_blog', $id_blog);
+        $this->db->bind(':judul', $judul);
+        $this->db->bind(':body', $body);
+        $this->db->bind(':foto_blogs', $foto);
+        $this->db->bind(':id_author', $author);
         $this->db->execute(); // Menggunakan execute() untuk pernyataan SQL INSERT
 
         // Memasukkan data kategori blog ke dalam tabel blog_kategori
-        $this->db->query("INSERT INTO blog_kategori (id_blog, id_kategori) VALUES (?, ?)");
-        $this->db->bind(1, $id_blog);
-        $this->db->bind(2, $kategori);
-        $this->db->execute(); // Menggunakan execute() untuk pernyataan SQL INSERT
+        $this->db->query("INSERT INTO blog_kategori (id_blog, id_kategori) VALUES (:id_blog, :id_kategori)");
+        $this->db->bind(':id_blog', $id_blog);
+        $this->db->bind(':id_kategori', $kategori);
+        $this->db->execute();
+
+        return $id_blog; // Menggunakan execute() untuk pernyataan SQL INSERT
+    }
+
+    // Metode untuk memperbarui foto blog
+    public function updateBlogFoto($id_blog, $fileName)
+    {
+        $this->db->query('UPDATE blogs SET foto_blogs = :foto_blogs WHERE id_blog = :id_blog');
+        $this->db->bind(':foto_blogs', $fileName);
+        $this->db->bind(':id_blog', $id_blog);
+        return $this->db->execute();
     }
 
     // Fungsi Untuk Update Blog
     public function updateBlogWithCategories($id_blog, $judul, $body, $foto_blogs, $kategori_ids)
     {
-        // Update blog dengan informasi baru
-        $sql = "UPDATE blogs SET judul = :judul, body = :body";
-        $binds = [
-            ':judul' => $judul,
-            ':body' => $body,
-            ':id_blog' => $id_blog
-        ];
+        try {
+            // Update blog dengan informasi baru
+            $sql = "UPDATE blogs SET judul = :judul, body = :body";
+            $binds = [
+                ':judul' => $judul,
+                ':body' => $body,
+                ':id_blog' => $id_blog
+            ];
 
-        if ($foto_blogs) {
-            $sql .= ", foto_blogs = :foto_blogs";
-            $binds[':foto_blogs'] = $foto_blogs;
+            if ($foto_blogs) {
+                $sql .= ", foto_blogs = :foto_blogs";
+                $binds[':foto_blogs'] = $foto_blogs;
+            }
+
+            $sql .= " WHERE id_blog = :id_blog";
+
+            $this->db->query($sql);
+
+            foreach ($binds as $key => $value) {
+                $this->db->bind($key, $value);
+            }
+
+            $this->db->execute();
+
+            // Pastikan kategori_ids adalah array
+            if (!is_array($kategori_ids)) {
+                $kategori_ids = explode(',', $kategori_ids);
+            }
+
+            // Hilangkan duplikat dari kategori_ids
+            $kategori_ids = array_unique($kategori_ids);
+
+            // Update kategori blog
+            if ($this->updateBlogCategories($id_blog, $kategori_ids)) {
+                $_SESSION['message'] = 'Blog berhasil diperbarui!';
+                $_SESSION['message_type'] = 'success';
+                return true;
+            } else {
+                $_SESSION['message'] = 'Gagal memperbarui kategori blog!';
+                $_SESSION['message_type'] = 'error';
+                return false;
+            }
+        } catch (Exception $e) {
+            $_SESSION['message'] = 'Terjadi kesalahan: ' . $e->getMessage();
+            $_SESSION['message_type'] = 'error';
+            return false;
         }
-
-        $sql .= " WHERE id_blog = :id_blog";
-
-        $this->db->query($sql);
-
-        foreach ($binds as $key => $value) {
-            $this->db->bind($key, $value);
-        }
-
-        $this->db->execute();
-
-        // Pastikan kategori_ids adalah array
-        if (!is_array($kategori_ids)) {
-            $kategori_ids = explode(',', $kategori_ids);
-        }
-
-        // Hilangkan duplikat dari kategori_ids
-        $kategori_ids = array_unique($kategori_ids);
-
-        // Update kategori blog
-        $this->updateBlogCategories($id_blog, $kategori_ids);
     }
 
     public function updateBlogCategories($id_blog, $kategori_ids)
     {
-        // Hapus semua kategori yang terkait dengan blog
-        $this->db->query("DELETE FROM blog_kategori WHERE id_blog = :id_blog");
-        $this->db->bind(':id_blog', $id_blog);
-        $this->db->execute();
+        try {
+            // Hapus semua kategori yang terkait dengan blog
+            $this->db->query("DELETE FROM blog_kategori WHERE id_blog = :id_blog");
+            $this->db->bind(':id_blog', $id_blog);
+            $this->db->execute();
 
-        // Tambahkan kategori baru
-        $sql = "INSERT INTO blog_kategori (id_blog, id_kategori) VALUES ";
-        $values = [];
-        $binds = [':id_blog' => $id_blog];
-        foreach ($kategori_ids as $index => $id_kategori) {
-            $values[] = "(:id_blog, :id_kategori_{$index})";
-            $binds[":id_kategori_{$index}"] = $id_kategori;
-        }
-        $sql .= implode(", ", $values);
+            // Tambahkan kategori baru
+            $sql = "INSERT INTO blog_kategori (id_blog, id_kategori) VALUES ";
+            $values = [];
+            $binds = [':id_blog' => $id_blog];
+            foreach ($kategori_ids as $index => $id_kategori) {
+                $values[] = "(:id_blog, :id_kategori_{$index})";
+                $binds[":id_kategori_{$index}"] = $id_kategori;
+            }
+            $sql .= implode(", ", $values);
 
-        $this->db->query($sql);
-        foreach ($binds as $key => $value) {
-            $this->db->bind($key, $value);
+            $this->db->query($sql);
+            foreach ($binds as $key => $value) {
+                $this->db->bind($key, $value);
+            }
+            $this->db->execute();
+
+            return true;
+        } catch (Exception $e) {
+            $_SESSION['message'] = 'Terjadi kesalahan saat memperbarui kategori: ' . $e->getMessage();
+            $_SESSION['message_type'] = 'error';
+            return false;
         }
-        $this->db->execute();
     }
+
 
 
 
     public function deleteBlog($id_blog)
     {
-        // Delete related categories
-        $this->db->query("DELETE FROM blog_kategori WHERE id_blog = :id_blog");
-        $this->db->bind(':id_blog', $id_blog);
-        $this->db->execute();
+        try {
+            // Delete related categories
+            $this->db->query("DELETE FROM blog_kategori WHERE id_blog = :id_blog");
+            $this->db->bind(':id_blog', $id_blog);
+            $this->db->execute();
 
-        // Delete blog itself
-        $this->db->query("DELETE FROM blogs WHERE id_blog = :id_blog");
-        $this->db->bind(':id_blog', $id_blog);
-        $this->db->execute();
+            // Delete blog itself
+            $this->db->query("DELETE FROM blogs WHERE id_blog = :id_blog");
+            $this->db->bind(':id_blog', $id_blog);
+            $this->db->execute();
+
+            // Set success message
+            $_SESSION['message'] = 'Blog berhasil dihapus!';
+            $_SESSION['message_type'] = 'success';
+            return true;
+        } catch (Exception $e) {
+            // Set error message
+            $_SESSION['message'] = 'Gagal menghapus blog: ' . $e->getMessage();
+            $_SESSION['message_type'] = 'error';
+            return false;
+        }
     }
+
 
 
     // Fungsi untuk mendapatkan id_blog terakhir dari database
     private function getLastBlogId()
     {
-        $this->db->query("SELECT id_blog FROM blogs ORDER BY id_blog DESC LIMIT 1");
+        $this->db->query("SELECT id_blog FROM blogs ORDER BY time_stamp DESC LIMIT 1");
         $last_id = $this->db->single();
         $last_id = $last_id['id_blog']; // Mengambil nilai id_blog dari hasil query
         return (int) str_replace('b', '', $last_id);

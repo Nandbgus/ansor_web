@@ -14,7 +14,7 @@
                     <label for="menu" style="text-transform: uppercase;" class="block text-md p-2 font-medium text-gray-400 uppercase">Menu</label>
                     <hr>
                     <a href="<?= BASEURL; ?>/anggota" class="block text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'Dashboard') ? ' text-white bg-gray-600' : 'text-gray-400  hover:text-white' ?>" aria-current="">Dashboard</a>
-                    <a href="<?= BASEURL; ?>/anggota/sertifikat" class="mt-2 block text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'sertifikat_anggota') ? ' text-white bg-gray-600' : 'text-gray-400  hover:text-white' ?>" aria-current="">Sertifikat</a>
+                    <a href="<?= BASEURL; ?>/anggota/sertifikat" class="mt-2 block text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'sertifikat_anggota') ? ' text-white bg-gray-600' : 'text-gray-400  hover:text-white' ?>" aria-current="">Form Pengajuan</a>
                     <hr>
                     <a href="<?= BASEURL; ?>/anggota/profile" class="block mt-2 text-md hover:bg-gray-600 p-2 <?= ($data['current_page'] == 'Profile_anggota') ? 'text-white bg-gray-600' : 'text-gray-400 hover:text-white' ?>" aria-current="">Profile</a>
                 </div>

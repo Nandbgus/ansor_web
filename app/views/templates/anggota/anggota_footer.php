@@ -4,6 +4,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/print-js@1.6.0/dist/print.min.js"></script>
 <script>
+    var app = {
+        activeTab: 'sertifikat', // Tab sertifikat aktif secara default
+        isMinimizedForm: false,
+        isMinimizedBlogs: false,
+    };
     // Fungsi untuk menambahkan kategori
     function addCategory() {
         var selectElement = document.getElementById('kategori');
