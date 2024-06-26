@@ -70,13 +70,27 @@
                 /* TailwindCSS red-600 */
                 color: white;
             }
+
+            .hidden {
+                display: none;
+            }
+
+            .modal {
+                z-index: 50;
+                animation: fadeIn 0.5s;
+            }
+
+            .modal-content {
+                position: relative;
+                animation: slideIn 0.5s;
+            }
         }
     </style>
 </head>
 
 <body class="h-full" x-data="{ darkMode: false, sidebarOpen: false, toggleDarkMode() { this.darkMode = !this.darkMode } }" :class="{ 'dark': darkMode }">
 
-    <div class="flex h-full w-full ">
+    <div class="flex h-full w-full overflow-auto">
         <?php if (isset($_SESSION['message'])) : ?>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {

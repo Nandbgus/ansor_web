@@ -1,6 +1,13 @@
 <?php
 class Approve extends Controller
 {
+    private $logHelper;
+
+    public function __construct()
+    {
+        // Initialize LogHelper
+        $this->logHelper = new LogHelper();
+    }
     public function index()
     {
         // Check if the user is logged in
@@ -31,7 +38,7 @@ class Approve extends Controller
             ];
             $photoFile = $_FILES['foto'];
             $tanggalFormat = date('Ymd', strtotime($data['tanggal_kegiatan']));
-            $laporanID = substr($data['id_anggota'], -2) . '_' . $tanggalFormat;
+            $laporanID = $data['id_anggota'] . '_' . $tanggalFormat;
             var_dump($laporanID);
             if ($this->model('Approve_model')->kirimPermintaan($data)) {
                 $this->model('Anggota_model')->saveFotoSertifikat($data['id_anggota'], $photoFile, $data['id_kegiatan'], $laporanID);
@@ -92,6 +99,7 @@ class Approve extends Controller
             if ($this->model('Approve_model')->updateStatus($id_anggota, $status)) {
                 $_SESSION['message'] = 'Berhasil Memperbarui';
                 $_SESSION['message_type'] = 'success';
+                $this->logHelper->log($_SESSION['user_id'], "Memberikan Approve Sertifikat : " . $id_anggota . ", dengan Keterangan : " . $status);
                 header('Location: ' . BASEURL . '/approve');
             } else {
                 $_SESSION['message'] = 'Error';
@@ -109,6 +117,7 @@ class Approve extends Controller
             if ($this->model('Approve_model')->updateStatusRole($id_anggota, $status)) {
                 $_SESSION['message'] = 'Permintaan Disetujui';
                 $_SESSION['message_type'] = 'success';
+                $this->logHelper->log($_SESSION['user_id'], "Memberikan Approve Role : " . $id_anggota . ", dengan Keterangan : " . $status);
                 header('Location: ' . BASEURL . '/approve');
             } else {
                 $_SESSION['message'] = 'Permintaan Ditolak';

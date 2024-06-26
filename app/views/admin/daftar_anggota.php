@@ -1,19 +1,18 @@
-<h1 class="text-2xl font-bold">Halaman Daftar Anggota</h1>
-<br>
-<div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 bg-white rounded-md">
-    <div class="overflow-x-auto">
-        <div class="shadow overflow-hidden sm:rounded-lg">
+<div class="container mx-auto px-4">
+    <h1 class="text-2xl font-bold my-4">Halaman Daftar Anggota</h1>
+    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 bg-white rounded-md shadow">
+        <div class="overflow-x-auto">
             <table id="example" class="min-w-full bg-white divide-y divide-gray-200 rounded-lg">
                 <thead class="bg-gray-500">
                     <tr>
-                        <th scope="col" class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">No</th>
-                        <th scope="col" class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Nama Anggota</th>
-                        <th scope="col" class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">No Hp</th>
-                        <th scope="col" class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Dusun</th>
-                        <th scope="col" class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Desa</th>
-                        <th scope="col" class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">RT</th>
-                        <th scope="col" class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Status Anggota</th>
-                        <th scope="col" class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Aksi</th>
+                        <th class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">No</th>
+                        <th class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Nama Anggota</th>
+                        <th class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">No Hp</th>
+                        <th class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Dusun</th>
+                        <th class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Desa</th>
+                        <th class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">RT</th>
+                        <th class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Status Anggota</th>
+                        <th class="px-6 py-3 border border-gray-300 text-left text-xs font-medium text-gray-600 uppercase">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200 text-center">
@@ -26,13 +25,15 @@
                                 <td class="px-6 py-4 border border-gray-300 whitespace-nowrap text-sm text-gray-900"><?= htmlspecialchars($anggota['nama_dusun'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td class="px-6 py-4 border border-gray-300 whitespace-nowrap text-sm text-gray-900"><?= htmlspecialchars($anggota['nama_desa'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td class="px-6 py-4 border border-gray-300 whitespace-nowrap text-sm text-gray-900"><?= htmlspecialchars($anggota['rt'], ENT_QUOTES, 'UTF-8') ?></td>
-                                <td class="px-6 py-4 border border-gray-300 whitespace-nowrap text-sm text-gray-900"><?php if ($anggota['status_verif'] === 'pending') {
-                                                                                                                            echo htmlspecialchars($anggota['nama_keanggotaan']) . ' <span class="status-pending text-blue-500">(pending)</span>';
-                                                                                                                        } elseif ($anggota['status_verif'] === 'approve') {
-                                                                                                                            echo htmlspecialchars($anggota['nama_keanggotaan']);
-                                                                                                                        } else {
-                                                                                                                            echo 'Tidak ada status';
-                                                                                                                        } ?></td>
+                                <td class="px-6 py-4 border border-gray-300 whitespace-nowrap text-sm text-gray-900">
+                                    <?php if ($anggota['status_verif'] === 'pending') : ?>
+                                        <?= htmlspecialchars($anggota['nama_keanggotaan']) ?> <span class="status-pending text-blue-500">(pending)</span>
+                                    <?php elseif ($anggota['status_verif'] === 'approve') : ?>
+                                        <?= htmlspecialchars($anggota['nama_keanggotaan']) ?>
+                                    <?php else : ?>
+                                        Tidak ada status
+                                    <?php endif; ?>
+                                </td>
                                 <td class="px-6 py-4 border border-gray-300 whitespace-nowrap text-sm font-medium">
                                     <button type="button" onclick="viewMember('<?= $anggota['id_member'] ?>')" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-500 hover:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700 transition duration-150 ease-in-out">
                                         View

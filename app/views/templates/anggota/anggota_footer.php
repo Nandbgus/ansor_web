@@ -3,6 +3,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/print-js@1.6.0/dist/print.min.js"></script>
+<script src="<?= BASEURL ?>/js/modal_anggota_dash.js"></script>
 <script>
     var app = {
         activeTab: 'sertifikat', // Tab sertifikat aktif secara default

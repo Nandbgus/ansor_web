@@ -2,6 +2,7 @@
 
 class Admin extends Controller
 {
+    private $logHelper;
     public function __construct()
     {
 
@@ -16,6 +17,9 @@ class Admin extends Controller
             header('Location: ' . BASEURL . '/auth/login');
             exit(); // Pastikan untuk keluar setelah melakukan redirect
         }
+
+        // Initialize LogHelper
+        $this->logHelper = new LogHelper();
     }
 
     //View Admin
@@ -65,11 +69,22 @@ class Admin extends Controller
         $this->view('admin/daftar_anggota', $data);
         $this->view('templates/admin/footer_nav');
     }
+
+    // public function log_admin()
+    // {
+    //     $data['head'] = "Laporan Aktivitas Admin";
+    //     $data['current_page'] = 'log_admin';
+    //     $data['logs'] = $this->model('Log_model')->report_all();
+    //     $this->view('templates/admin/admin_sidebar', $data);
+    //     $this->view('admin/reports', $data);
+    //     $this->view('templates/admin/footer_nav');
+    // }
     public function reports()
     {
         $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
-        $data['head'] = 'Laporan';
+        $data['head'] = 'Laporan Aktivitas';
         $data['members'] = $this->model('Anggota_model')->list_anggota();
+        $data['logs'] = $this->model('Log_model')->report_all();
         $data['current_page'] = 'reports';
         $this->view('templates/admin/admin_sidebar', $data);
         $this->view('admin/reports', $data);
@@ -89,6 +104,7 @@ class Admin extends Controller
             ];
 
             if ($this->model('Anggota_model')->tambah_anggota($data)) {
+                $this->logHelper->log($data['id'], "Menambahkan Anggota dengan nama:" . $data['nama_a']);
                 header('Location: ' . BASEURL . '/admin/daftar_anggota');
             } else {
                 header('Location: ' . BASEURL . '/admin/form_members');

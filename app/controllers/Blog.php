@@ -2,6 +2,12 @@
 
 class Blog extends Controller
 {
+    private $logHelper;
+
+    public function __construct()
+    {
+        $this->logHelper = new LogHelper();
+    }
 
     public function index()
     {
@@ -112,6 +118,7 @@ class Blog extends Controller
                         $this->model('Blog_model')->updateBlogFoto($id_blog, $fileName);
                         $_SESSION['message'] = 'Blog berhasil ditambahkan!';
                         $_SESSION['message_type'] = 'success';
+                        $this->logHelper->log($author, "Menambahkan Blog dengan judul:" . $judul);
                     } else {
                         $_SESSION['message'] = 'Blog berhasil ditambahkan, tapi gagal mengupload foto.';
                         $_SESSION['message_type'] = 'error';

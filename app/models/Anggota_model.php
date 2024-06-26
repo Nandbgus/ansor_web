@@ -152,17 +152,28 @@
             $this->db->bind(':id', $idMember);
             $totalKegiatan = $this->db->single();
 
+            // Mendapatkan total kegiatan dengan status 'approved'
+            $this->db->query("SELECT 
+        COUNT(*) AS total_kegiatan_approved
+    FROM 
+        laporan_kegiatan
+    WHERE 
+        id_anggota = :id AND status_verif = 'approve'");
+            $this->db->bind(':id', $idMember);
+            $totalKegiatanApproved = $this->db->single();
+
             // Menggabungkan hasil ke dalam satu array
             return [
                 'kegiatanList' => $kegiatanList,
-                'totalKegiatan' => $totalKegiatan['total_kegiatan']
+                'totalKegiatan' => $totalKegiatan['total_kegiatan'],
+                'totalKegiatanApproved' => $totalKegiatanApproved['total_kegiatan_approved']
             ];
         }
 
         public function saveFotoSertifikat($userId, $photoFile, $idKegiatan, $laporanID)
         {
             // Path penyimpanan foto
-            $uploadDir = 'F:\WebServer\laragon\www\ansor\public\img\sertifikat/';
+            $uploadDir = 'F:/WebServer/laragon/www/ansor/public/img/sertifikat/';
 
             // Periksa apakah foto sudah diunggah dengan benar
             if ($photoFile['error'] === UPLOAD_ERR_OK) {

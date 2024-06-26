@@ -8,40 +8,36 @@
     }
 
 
-    var table = $('#example').DataTable({
-
-        select: {
-            style: 'os',
-        },
-        responsive: {
-            details: false
-        },
-
-        layout: {
-            topStart: {
-
-                buttons: [{
-                        extend: 'colvis',
-                        text: 'Visibility',
-                        className: 'ButtonTool',
-                    },
-
-                    {
-                        extend: 'print',
-                        className: 'ButtonTool',
-                    },
-                    {
-                        extend: ['searchPanes'],
-                        text: 'Filter Data',
-                        className: 'ButtonTool',
-                        config: {
-                            threshold: 0.8,
-                        }
+    $(document).ready(function() {
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'colvis',
+                    text: 'Visibility',
+                    className: 'ButtonTool',
+                },
+                {
+                    extend: 'pdfHtml5',
+                    className: 'ButtonTool',
+                    text: 'Download PDF',
+                    title: 'Daftar Anggota',
+                    customize: function(doc) {
+                        doc.styles.tableHeader = {
+                            fillColor: '#2d3748',
+                            color: 'white',
+                            alignment: 'left'
+                        };
+                        doc.styles.tableBodyEven = {
+                            fillColor: '#f8fafc'
+                        };
+                        doc.styles.tableBodyOdd = {
+                            fillColor: '#e2e8f0'
+                        };
                     }
-                ],
-            }
-        },
-
+                }
+            ],
+            responsive: true
+        });
     });
 
     // Initial check for selected rows

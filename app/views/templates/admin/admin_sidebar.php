@@ -137,7 +137,7 @@
 
 <body class="h-full" x-data="{ darkMode: false, sidebarOpen: false, toggleDarkMode() { this.darkMode = !this.darkMode } }" :class="{ 'dark': darkMode }">
 
-    <div class="flex h-full  w-full">
+    <div class="flex h-full  w-full overflow-auto">
         <!-- Sidebar -->
         <div class="h-full bg-gray-800 text-white w-3/4 md:w-1/4 absolute md:relative z-40 transform transition-transform duration-300 ease-in-out" :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen, 'md:translate-x-0': sidebarOpen || !sidebarOpen}">
             <div class="p-4 flex justify-between items-center">
