@@ -5,7 +5,7 @@
                 <div class="box rounded-md flex flex-col justify-between w-full h-auto shadow-sm bg-blue-500">
                     <div class="main w-full p-2 flex justify-between">
                         <div class="left left-0 m-0 flex flex-col">
-                            <span class="text-5xl font-bold"><?= $data['sertif']['totalKegiatanApproved'] ?> / <?= $data['sertif']['totalKegiatan'] ?></span>
+                            <span class="text-5xl font-bold"><?= $data['sertif']['totalKegiatanApproved'] ?>/<?= $data['sertif']['totalKegiatan'] ?><span class="text-sm font-normal text-gray-300">Approve</span></span>
                             <span>Sertifikat</span>
                         </div>
                         <div class="right right-0 w-20 h-auto pt-4">

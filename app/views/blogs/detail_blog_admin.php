@@ -45,7 +45,7 @@
         <div>
             <label for="foto" class="block text-gray-700 text-sm font-bold mb-2">Foto</label>
             <input type="file" id="foto" name="foto" class="border border-gray-300 px-4 py-2 rounded-md w-full" accept="image/*">
-            <img id="currentFoto" class="object-cover object-center w-24 h-24 mt-2 cursor-pointer" src="<?= BASEURL ?>/img/blog/<?= $data['blog']['foto_blogs'] ?>" alt="">
+            <img id="currentFoto" class="object-cover object-center w-24 h-24 mt-2 cursor-pointer hover:scale-110 transition ease-in-out duration-300 active:scale-[10] focus:scale-[10]" src="<?= BASEURL ?>/img/blog/<?= $data['blog']['foto_blogs'] ?>" alt="">
         </div>
 
         <div>
@@ -73,18 +73,18 @@
         </div>
 
         <div class="flex space-x-4">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Update Blog</button>
+            <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Update Blog</button>
         </div>
     </form>
 
     <!-- Form Delete -->
-    <form action="<?= BASEURL ?>/blog/hapus_blog" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus blog ini?');" class="mt-4">
+    <form id="deleteForm" action="<?= BASEURL ?>/blog/hapus_blog" method="POST" class="mt-4">
         <input type="hidden" name="id_blog" value="<?= $data['blog']['id_blog'] ?>">
-        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Delete Blog</button>
+        <button type="button" id="deleteButton" class="w-full bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Delete Blog</button>
     </form>
 
     <!-- Modal Preview Gambar -->
-    <div id="modalPreview" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden md:p-20 p-4">
+    <div id="modalPreview" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden md:p-20 p-4 transition ease-in duration-300">
         <div class="relative bg-white md:p-8 p-4 rounded-md flex justify-center">
             <button id="closeModal" class="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-full hidden"></button>
             <img id="modalImage" src="" alt="Preview" class="lg:max-w-3xl max-h-full w-auto h-auto">

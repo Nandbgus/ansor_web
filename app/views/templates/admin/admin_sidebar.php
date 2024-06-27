@@ -119,6 +119,32 @@
             /* TailwindCSS red-600 */
             color: red;
         }
+
+        .dataTables_wrapper .dt-buttons {
+            margin-bottom: 1rem;
+        }
+
+        .dataTables_filter {
+            margin-top: 1rem;
+            text-align: right;
+        }
+
+        .ButtonTool {
+            background-color: #0080ff;
+            /* Change to desired button color */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .search-control {
+            right: 0;
+            margin: 0;
+            width: 100%;
+        }
     </style>
 
     <!-- alpine Js -->
@@ -131,6 +157,7 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <!-- Data Tables -->
     <script src="/ansor/public/js/datatables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.21/jspdf.plugin.autotable.min.js"></script>
 </head>

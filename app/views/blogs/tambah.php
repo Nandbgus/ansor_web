@@ -56,18 +56,20 @@
 
           <div x-show="!isMinimizedBlogs" class="p-4 ">
                <input type="text" id="searchInput" placeholder="Ex : One Piece..." class="w-full border border-solid rounded-md px-4 py-2 bg-gray-100">
-               <div id="blogList" class="mt-2 tampil-blogs grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-scroll h-80">
+               <div id="blogList" class="mt-2 group/item tampil-blogs grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-scroll h-80">
                     <?php foreach ($data['blogs'] as $isi) : ?>
                          <div class="p-6 rounded-lg shadow-md border tracking-normal">
-                              <a class="hover:text-blue-300" href="<?= BASEURL ?>/blog/detail_blog_admin?id=<?= $isi['id_blog'] ?>">
-                                   <h2 class="text-3xl font-bold mb-4"><?= htmlspecialchars($isi["judul"], ENT_QUOTES, 'UTF-8') ?></h2>
+                              <a href="" class="group/edit invisible hover:bg-slate-200 group-hover/item:visible">
+                                   <a class="hover:text-blue-300" href="<?= BASEURL ?>/blog/detail_blog_admin?id=<?= $isi['id_blog'] ?>">
+                                        <h2 class="text-3xl font-bold mb-4"><?= htmlspecialchars($isi["judul"], ENT_QUOTES, 'UTF-8') ?></h2>
+                                   </a>
+                                   <img class="w-24 mb-2" src="<?= BASEURL ?>/img/blog/<?= $isi['foto_blogs'] ?>" alt="">
+                                   <?php foreach ($isi['kategories'] as $category) : ?>
+                                        <span class="mr-2 mb-2 px-2 py-1 bg-gray-200 rounded text-sm"><?= htmlspecialchars($category['nama_kategori'], ENT_QUOTES, 'UTF-8') ?></span>
+                                   <?php endforeach; ?>
+                                   <p class="text-gray-600 text-sm mb-4 mt-4">Ditulis oleh <span class="font-semibold text-blue-700"><?= htmlspecialchars($isi["nama_a"], ENT_QUOTES, 'UTF-8') ?></span> | <span class="font-semibold"><?= date('d-m-Y', strtotime($isi['time_stamp'])) ?></span></p>
+                                   <p class="text-gray-700 truncate line-clamp-2"><?= htmlspecialchars($isi["body"], ENT_QUOTES, 'UTF-8') ?></p>
                               </a>
-                              <img class="w-24 mb-2" src="<?= BASEURL ?>/img/blog/<?= $isi['foto_blogs'] ?>" alt="">
-                              <?php foreach ($isi['kategories'] as $category) : ?>
-                                   <span class="mr-2 mb-2 px-2 py-1 bg-gray-200 rounded text-sm"><?= htmlspecialchars($category['nama_kategori'], ENT_QUOTES, 'UTF-8') ?></span>
-                              <?php endforeach; ?>
-                              <p class="text-gray-600 text-sm mb-4 mt-4">Ditulis oleh <span class="font-semibold text-blue-700"><?= htmlspecialchars($isi["nama_a"], ENT_QUOTES, 'UTF-8') ?></span> | <span class="font-semibold"><?= date('d-m-Y', strtotime($isi['time_stamp'])) ?></span></p>
-                              <p class="text-gray-700 truncate line-clamp-2"><?= htmlspecialchars($isi["body"], ENT_QUOTES, 'UTF-8') ?></p>
                          </div>
                     <?php endforeach ?>
                </div>

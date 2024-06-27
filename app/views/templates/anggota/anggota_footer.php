@@ -5,6 +5,21 @@
 <script src="https://cdn.jsdelivr.net/npm/print-js@1.6.0/dist/print.min.js"></script>
 <script src="<?= BASEURL ?>/js/modal_anggota_dash.js"></script>
 <script>
+    document.getElementById('deleteButton').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('deleteForm').submit();
+            }
+        })
+    });
     var app = {
         activeTab: 'sertifikat', // Tab sertifikat aktif secara default
         isMinimizedForm: false,

@@ -41,6 +41,7 @@ class Auth extends Controller
                     if ($user->getBio($user->id)) {
                         // Simpan informasi tambahan ke session
                         $_SESSION['user_name'] = $user->nama_a;
+                        $_SESSION['last_login'] = $user->last_login;
                         $_SESSION['no_hp'] = $user->no_hp;
                         $_SESSION['status'] = $user->nama_status;
                         $_SESSION['desa'] = $user->nama_desa;

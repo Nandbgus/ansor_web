@@ -126,6 +126,18 @@
             return $this->db->resultSet();
         }
 
+        public function getJumlahMemberByDusun()
+        {
+            $this->db->query("CALL getAllMemberCountsDusun()");
+            return $this->db->resultSet();
+        }
+
+        public function getJumlahMemberApprove()
+        {
+            $this->db->query("CALL getCountsMemberApprove()");
+            return $this->db->resultSet();
+        }
+
 
 
         public function getKegiatanByMember($idMember)

@@ -51,4 +51,6 @@
             </div>
         </div>
     </form>
+    <div id="lastIdAnggotaContainer" data-last-id="<?= $data['lastIdAnggota']["id"] ?? "XII265DEFAULT0" ?>"></div>
+
 </div>

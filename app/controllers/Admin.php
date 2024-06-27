@@ -29,8 +29,10 @@ class Admin extends Controller
         $data['head'] = 'Dashboard';
         $data['current_page'] = 'Dashboard';
         $data['foto'] = $this->model('User_model')->getProfilePhoto($_SESSION['user_id']);
+        $data['chart'] = $this->model('Anggota_model')->getJumlahMemberByDusun();
+        $data['approve'] = $this->model('Anggota_model')->getJumlahMemberApprove();
         $this->view('templates/admin/admin_sidebar', $data);
-        $this->view('admin/dashboard');
+        $this->view('admin/dashboard', $data);
         $this->view('templates/admin/footer_nav');
     }
 

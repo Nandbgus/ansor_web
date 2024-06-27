@@ -13,6 +13,7 @@ class User_model extends Controller
     // Table Members
     public $nama_a;
     public $no_hp;
+    public $last_login;
     public $id_dusun;
     public $id_status;
     public $foto;
@@ -61,6 +62,9 @@ class User_model extends Controller
 
         if ($row && password_verify($this->password,  $row['password'])) {
             // Set user properties
+            $this->db->query('UPDATE members SET last_login = NOW() WHERE id = ?');
+            $this->db->bind(1, $row['id']);
+            $this->db->execute();
             $this->id = $row['id'];
             $this->username = $row['username'];
             $this->is_admin = $row['is_admin'];
@@ -77,7 +81,7 @@ class User_model extends Controller
         $this->db->query("
         SELECT 
             users.id, users.username, users.password, users.is_admin,
-            members.nama_a, members.no_hp, members.id_dusun, members.foto, members.rt,
+            members.nama_a, members.no_hp, members.id_dusun, members.foto, members.rt, members.last_login,
             dusun.nama AS nama_dusun, dusun.id_desa,
             desa.nama AS nama_desa,
             kegiatan.nama AS nama_kegiatan,
@@ -100,6 +104,7 @@ class User_model extends Controller
         if ($row) {
             // Set additional properties from joined tables
             $this->nama_a = $row['nama_a'];
+            $this->last_login = $row['last_login'];
             $this->no_hp = $row['no_hp'];
             $this->id_dusun = $row['id_dusun'];
             $this->foto = $row['foto'];
